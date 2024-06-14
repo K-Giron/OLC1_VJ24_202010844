@@ -1,0 +1,131 @@
+
+package analizadores;
+
+//importaciones
+import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+import abstracto.Instruccion;
+import simbolo.Tipo;
+import simbolo.tipoDato;
+import excepciones.Errores;
+
+//instrucciones
+import instrucciones.Print;
+import instrucciones.Declaracion;
+
+//expresiones
+import expresiones.Nativo;
+import expresiones.Aritmeticas;
+import expresiones.OperadoresAritmeticos;
+import expresiones.Relacionales;
+import expresiones.OperadoresRelacionales;
+import expresiones.Logicos;
+import expresiones.OperadoresLogicos;
+
+// parser
+parser code
+{:
+    scanner s;
+    parser(scanner s){this.s = s;}
+
+    public LinkedList<Errores> listaErrores = new LinkedList<>();
+    
+    public void syntax_error(Symbol s){
+        listaErrores.add(new Errores("Error Sintactico Recuperable", "No se esperaba el componente "+ s.value , s.left, s.right));
+        System.out.println("Error Sintactico en la linea " +
+        (s.left) + " y columna " + (s.right) +
+        ". No se esperaba el componente: " + (s.value) + ".");
+    }
+
+    public void unrecovered_syntax_error (Symbol s){
+        listaErrores.add(new Errores("Error Sintactico no Recuperable", "No se esperaba el componente "+ s.value , s.left, s.right));
+        System.out.println("Error Sintactico no recuperable en la linea" +
+        (s.left) + " y columna " + (s.right) +
+        ". No se esperaba el componente: " + (s.value) + ".");
+    }
+
+:}
+
+action code
+{:
+
+
+:}
+
+//terminales
+terminal String CADENA, ENTERO, DECIMAL, BOOLEANO, CARACTER, ID,MUTABILIDAD;
+terminal FINCADENA, IMPRIMIR,INT,DOUBLE,STRING,CHAR,BOOL,DOSPUNTOS;
+terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MODULO;
+terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL;
+terminal OR, AND, NOT, XOR;
+
+//no terminales
+nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
+nonterminal Instruccion INSTRUCCION;
+nonterminal Instruccion IMPRESION,DECLARACION;
+nonterminal Tipo TIPOS;
+nonterminal Instruccion EXPRESION;
+
+
+precedence left OR;
+precedence left AND;
+precedence left XOR;
+precedence right NOT;
+precedence left IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE;
+precedence left MAS, MENOS;
+precedence left MULTIPLICACION, DIVISION, MODULO;
+precedence left POTENCIA;
+precedence left UMENOS;
+
+
+
+start with INICIO;
+
+INICIO ::= INSTRUCCIONES:a      {:   RESULT = a;   :}
+;
+
+INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b); :}
+                | INSTRUCCION:a                   {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+;
+
+INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
+                | DECLARACION:a                   {: System.out.println("Entra aca ");RESULT = a; :}
+                | error FINCADENA {: :}
+;
+IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
+;
+
+DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA {:   //RESULT = new Declaracion(b, c, a, aleft, aright);
+                                                                    //imprimir lo que envia hacia arriba
+                                                                    System.out.println("Entra aca haciendo pruebas"+d+ b+a+c);   :}
+;
+TIPOS ::= INT {: RESULT = new Tipo(tipoDato.ENTERO); :}
+        | DOUBLE {: RESULT = new Tipo(tipoDato.DECIMAL); :}
+        | STRING {: RESULT = new Tipo(tipoDato.CADENA); :}
+        | CHAR {: RESULT = new Tipo(tipoDato.CARACTER); :}
+        | BOOL {: RESULT = new Tipo(tipoDato.BOOLEANO); :}
+;
+EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UMENOS
+            | EXPRESION:a MAS EXPRESION:b   {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);   :}
+            | EXPRESION:a MENOS EXPRESION:b {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);   :}
+            | EXPRESION:a MULTIPLICACION EXPRESION:b {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);   :}
+            | EXPRESION:a DIVISION EXPRESION:b {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);   :}
+            | EXPRESION:a POTENCIA EXPRESION:b {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);   :}
+            | EXPRESION:a MODULO EXPRESION:b {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);   :}
+            | EXPRESION:a IGUALACION EXPRESION:b {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.IGUALACION, aleft, aright); :}
+            | EXPRESION:a MENORQUE EXPRESION:b {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MENORQUE, aleft, aright);   :}
+            | EXPRESION:a MAYORQUE EXPRESION:b {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYORQUE, aleft, aright);   :}
+            | EXPRESION:a MENOR EXPRESION:b {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MENOR, aleft, aright);   :}
+            | EXPRESION:a MAYOR EXPRESION:b {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYOR, aleft, aright);   :}
+            | EXPRESION:a DIFERENTE EXPRESION:b {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.DIFERENTE, aleft, aright);   :}
+            | EXPRESION:a OR EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.OR, aleft, aright);   :}
+            | EXPRESION:a AND EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);   :}
+            | EXPRESION:a XOR EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.XOR, aleft, aright);   :}
+            | NOT EXPRESION:a {:   RESULT = new Logicos(a, OperadoresLogicos.NOT, aleft, aright);   :}
+            | ENTERO:a      {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright );   :}
+            | DECIMAL:a     {:   RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright );   :}
+            | CADENA:a      {:   RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright );   :}
+            | BOOLEANO:a    {:   RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
+            | CARACTER:a    {:  RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright );   :}
+            //| ID:a          {:   RESULT = new Nativo(a, new Tipo(tipoDato.ID), aleft, aright );   :}
+;
