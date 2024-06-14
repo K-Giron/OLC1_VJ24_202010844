@@ -31,9 +31,12 @@ public class Main {
                 //esto es un comentario
             imprimir(5); 
              imprimir(false || 5<=5);
-                  //StrIng texto = \"Mi variable\";
-                  var num2 : int = 10;
-                  const nota2 : double = 20.6;
+                  var texto:StrIng  = \"Mi variable\";
+                  var num2 : dOuBLE = 10.20;
+                  const num3: int=20;
+                  var numeroprueba:int;
+                  var numerodouble:double;
+               
                 /*esto es un comentario
                 multilinea
                 fdfs

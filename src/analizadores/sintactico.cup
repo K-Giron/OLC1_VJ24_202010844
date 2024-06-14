@@ -89,15 +89,16 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b)
 ;
 
 INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
-                | DECLARACION:a                   {: System.out.println("Entra aca ");RESULT = a; :}
+                | DECLARACION:a                   {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
 ;
 
-DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA {:   //RESULT = new Declaracion(b, c, a, aleft, aright);
-                                                                    //imprimir lo que envia hacia arriba
-                                                                    System.out.println("Entra aca haciendo pruebas"+d+ b+a+c);   :}
+DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA {:  RESULT = new Declaracion(b, c, a,d, aleft, aright); :}
+                | MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a FINCADENA {:  
+                    Nativo c = new Nativo(tipoDato.NULL, a, aleft, aright);
+                RESULT = new Declaracion(b,c, a,d, aleft, aright); :}
 ;
 TIPOS ::= INT {: RESULT = new Tipo(tipoDato.ENTERO); :}
         | DOUBLE {: RESULT = new Tipo(tipoDato.DECIMAL); :}

@@ -10,6 +10,7 @@ import simbolo.Arbol;
 import simbolo.Simbolo;
 import simbolo.Tipo;
 import simbolo.tablaSimbolos;
+import simbolo.tipoDato;
 
 /**
  *
@@ -18,16 +19,22 @@ import simbolo.tablaSimbolos;
 public class Declaracion extends Instruccion{
     public String identificador;
     public Instruccion valor;
+    public String mutabilidad;
     
     
-    public Declaracion(String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
+    public Declaracion(String identificador, Instruccion valor, Tipo tipo,String mutabilidad, int linea, int col) {
         super(tipo, linea, col);
         this.identificador = identificador;
         this.valor = valor;
+        this.mutabilidad = mutabilidad;
     }
+    
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
+        boolean esMutable = false;
+        //pasar a minusculas la mutabilidad
+        this.mutabilidad = this.mutabilidad.toLowerCase();
         //interpretar la expresion
         var valorInterpretado = this.valor.interpretar(arbol, tabla);
         //validar si hubo un error
@@ -38,8 +45,35 @@ public class Declaracion extends Instruccion{
         if(this.valor.tipo.getTipo() != this.tipo.getTipo()){
             return new Errores("Semantico", "El tipo de la variable no coincide con el valor asignado", this.linea, this.col);
         }
+        //validar si la variable es constante
+        if(this.mutabilidad.equals("const")){
+            esMutable = false;
+        }else if(this.mutabilidad.equals("var")){
+            esMutable = true;
+        }else {
+            return new Errores("Semantico", "El tipo de mutabilidad no es valido", this.linea, this.col);
+        }
+        //validar para cada tipo de dato cuando la variable solo se declara
+        if (valorInterpretado== tipoDato.NULL ){
+            if (this.tipo.getTipo() == tipoDato.ENTERO){
+                valorInterpretado = 0;
+            }else if (this.tipo.getTipo() == tipoDato.DECIMAL){
+                valorInterpretado = 0.0;
+            }else if (this.tipo.getTipo() == tipoDato.BOOLEANO){
+                valorInterpretado = true;
+            }else if (this.tipo.getTipo() == tipoDato.CADENA){
+                valorInterpretado = "";
+            }else if (this.tipo.getTipo() == tipoDato.CARACTER){
+                valorInterpretado = '0';
+            }else{
+                return new Errores("Semantico", "El tipo de dato no es valido", this.linea, this.col);}
+        }
+
         //crear la variable
-        Simbolo s = new Simbolo(this.tipo, this.identificador,valorInterpretado);
+        Simbolo s = new Simbolo(this.tipo, this.identificador,valorInterpretado, esMutable);
+        //imprimir todo el simbolo
+        System.out.println(s.getId() + " " + s.getTipo().getTipo() + " " + s.getValor() + " " + s.getMutabilidad());
+
         boolean creacion = tabla.setVariable(s);
         if(!creacion){
             return new Errores("Semantico", "La variable ya existe en el ambito actual", this.linea, this.col);
