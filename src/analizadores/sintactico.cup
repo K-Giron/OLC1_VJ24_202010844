@@ -12,6 +12,7 @@ import excepciones.Errores;
 //instrucciones
 import instrucciones.Print;
 import instrucciones.Declaracion;
+import instrucciones.AsignacionVar;
 
 //expresiones
 import expresiones.Nativo;
@@ -21,6 +22,7 @@ import expresiones.Relacionales;
 import expresiones.OperadoresRelacionales;
 import expresiones.Logicos;
 import expresiones.OperadoresLogicos;
+import expresiones.AccesoVar;
 
 // parser
 parser code
@@ -62,7 +64,7 @@ terminal OR, AND, NOT, XOR;
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
-nonterminal Instruccion IMPRESION,DECLARACION;
+nonterminal Instruccion IMPRESION,DECLARACION,ASIGNACION;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 
@@ -90,6 +92,7 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b)
 
 INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | DECLARACION:a                   {: RESULT = a; :}
+                | ASIGNACION:a                   {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -99,6 +102,8 @@ DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
                 | MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a FINCADENA {:  
                     Nativo c = new Nativo(tipoDato.NULL, a, aleft, aright);
                 RESULT = new Declaracion(b,c, a,d, aleft, aright); :}
+;
+ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
 ;
 TIPOS ::= INT {: RESULT = new Tipo(tipoDato.ENTERO); :}
         | DOUBLE {: RESULT = new Tipo(tipoDato.DECIMAL); :}
@@ -128,5 +133,5 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | CADENA:a      {:   RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright );   :}
             | BOOLEANO:a    {:   RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
             | CARACTER:a    {:  RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright );   :}
-            //| ID:a          {:   RESULT = new Nativo(a, new Tipo(tipoDato.ID), aleft, aright );   :}
+            | ID:a          {:   RESULT= new AccesoVar(a, aleft,aright);   :}
 ;

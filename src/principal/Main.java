@@ -27,28 +27,31 @@ public class Main {
     public static void main(String[] args) {
         try {
             String texto = """
-            imprimir(\"Mi cadena\");
+            println(\"Mi cadena\");
                 //esto es un comentario
-            imprimir(5); 
-             imprimir(false || 5<=5);
-                  var texto:StrIng  = \"Mi variable\";
-                  var num2 : dOuBLE = 10.20;
-                  const num3: int=20;
-                  var numeroprueba:int;
-                  var numerodouble:double;
+            println(5); 
+             println(false || 5<=5);
+                  var TEXTO:StrIng  = \"Mi variable\";
+                  var nUm2 : dOuBLE = 10.20;  
+                  const NUM3: int=20;
+                  var numeroPRueba:int;
+                   println(numeroPRueba);
+                  var numeroDOUble:double;
+                  numeroPRueba=numeroPRueba+10;
+                  println(numeroprueba+25);
                
                 /*esto es un comentario
                 multilinea
                 fdfs
                 */
-             imprimir(545); 
-            imprimir(13.33$);
-             imprimir(45); 
+             println(545); 
+            println(13.33$);
+             println(45); 
                             /*esto es un comentario
                             multilinea
                             fdfs
                             */
-              imprimir(3.54);
+              println(3.54);
             
             """;
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
@@ -74,7 +77,7 @@ public class Main {
             }
             System.out.println(ast.getConsola());
             
-            //imprimir errores
+            //println errores
             for (var e : errores) {
                 System.out.println(e);
             }

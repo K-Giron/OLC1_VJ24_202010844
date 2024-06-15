@@ -72,7 +72,7 @@ COMENTARIOMULTIPLE= "/*"[^*]*"*"+([^/*][^*]*"*"+)*"/"
 
 
 //palabras reservadas
-IMPRIMIR="imprimir"
+IMPRIMIR="println"
 INT = "int"
 DOUBLE = "double"
 STRING = "string"

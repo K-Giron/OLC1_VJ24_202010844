@@ -69,6 +69,7 @@ public class Declaracion extends Instruccion{
                 return new Errores("Semantico", "El tipo de dato no es valido", this.linea, this.col);}
         }
 
+
         //crear la variable
         Simbolo s = new Simbolo(this.tipo, this.identificador,valorInterpretado, esMutable);
         //imprimir todo el simbolo
