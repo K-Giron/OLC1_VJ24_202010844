@@ -27,31 +27,39 @@ public class Main {
     public static void main(String[] args) {
         try {
             String texto = """
-            println(\"Mi cadena\");
-                //esto es un comentario
-            println(5); 
-             println(false || 5<=5);
-                  var TEXTO:StrIng  = \"Mi variable\";
-                  var nUm2 : dOuBLE = 10.20;  
-                  const NUM3: int=20;
-                  var numeroPRueba:int;
-                   println(numeroPRueba);
-                  var numeroDOUble:double;
-                  numeroPRueba=numeroPRueba+10;
-                  println(numeroprueba+25);
-               
+                var a:int=10;
+                           println(\"prueba else\");
+                         println(a);
+                 var b:bool=false;
+                 var c:bool=false;
+                 if(b){
+                  var a:int=20;
+                  println(a);
+                  }else if(c){
+                      var a:int=30;
+                      println(a);
+                           println(\"prueba else 2\");
+                    }else{
+                           println(\"prueba else 3\");
+                    }
+                  
+                
+                  println(a);
+                  println(c);
+
                 /*esto es un comentario
                 multilinea
                 fdfs
+                            var TEXTO:StrIng  = \"Mi variable\";
+                                             var nUm2 : dOuBLE = 10.20;  
+                                             const NUM3: int=20;
+                                             var numeroPRueba:int;
+                                              println(numeroPRueba);
+                                             var numeroDOUble:double;
+                                             numeroPRueba=numeroPRueba+10;
+                                             println(numeroprueba+25);
                 */
-             println(545); 
-            println(13.33$);
-             println(45); 
-                            /*esto es un comentario
-                            multilinea
-                            fdfs
-                            */
-              println(3.54);
+
             
             """;
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));

@@ -38,6 +38,8 @@ import excepciones.Errores;
 //simbolos del sistema
 PAR1="("
 PAR2=")"
+LLAVE1="{"
+LLAVE2="}"
 MAS="+"
 MENOS="-"
 POTENCIA="**"
@@ -73,6 +75,12 @@ COMENTARIOMULTIPLE= "/*"[^*]*"*"+([^/*][^*]*"*"+)*"/"
 
 //palabras reservadas
 IMPRIMIR="println"
+IF="if"
+ELSE="else"
+
+
+
+
 INT = "int"
 DOUBLE = "double"
 STRING = "string"
@@ -82,6 +90,8 @@ BOOL = "bool"
 %%
 
 <YYINITIAL> {IMPRIMIR} {return new Symbol(sym.IMPRIMIR, yyline, yycolumn,yytext());}
+<YYINITIAL> {IF} {return new Symbol(sym.IF, yyline, yycolumn,yytext());}
+<YYINITIAL> {ELSE} {return new Symbol(sym.ELSE, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}
@@ -111,6 +121,8 @@ BOOL = "bool"
 <YYINITIAL> {DOSPUNTOS} {return new Symbol(sym.DOSPUNTOS, yyline, yycolumn,yytext());}
 <YYINITIAL> {PAR1} {return new Symbol(sym.PAR1, yyline, yycolumn,yytext());}
 <YYINITIAL> {PAR2} {return new Symbol(sym.PAR2, yyline, yycolumn,yytext());}
+<YYINITIAL> {LLAVE1} {return new Symbol(sym.LLAVE1, yyline, yycolumn,yytext());}
+<YYINITIAL> {LLAVE2} {return new Symbol(sym.LLAVE2, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {MAS} {return new Symbol(sym.MAS, yyline, yycolumn,yytext());}
 <YYINITIAL> {MENOS} {return new Symbol(sym.MENOS, yyline, yycolumn,yytext());}

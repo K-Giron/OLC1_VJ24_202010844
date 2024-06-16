@@ -68,12 +68,13 @@ public class Declaracion extends Instruccion{
             }else{
                 return new Errores("Semantico", "El tipo de dato no es valido", this.linea, this.col);}
         }
-
+        //ver el valor de la variable
+        //System.out.println(valorInterpretado);
 
         //crear la variable
         Simbolo s = new Simbolo(this.tipo, this.identificador,valorInterpretado, esMutable);
         //imprimir todo el simbolo
-        System.out.println(s.getId() + " " + s.getTipo().getTipo() + " " + s.getValor() + " " + s.getMutabilidad());
+        //System.out.println(s.getId() + " " + s.getTipo().getTipo() + " el valor " + s.getValor() + " " + s.getMutabilidad());
 
         boolean creacion = tabla.setVariable(s);
         if(!creacion){
