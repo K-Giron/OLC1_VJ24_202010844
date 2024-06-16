@@ -23,6 +23,7 @@ public class sym {
   public static final int CONTINUE = 43;
   public static final int INT = 11;
   public static final int FOR = 19;
+  public static final int MATCH = 46;
   public static final int NOT = 40;
   public static final int AND = 39;
   public static final int FINCADENA = 9;
@@ -47,9 +48,11 @@ public class sym {
   public static final int MENORQUE = 32;
   public static final int POTENCIA = 25;
   public static final int ELSE = 18;
+  public static final int WHILE = 44;
   public static final int BOOLEANO = 5;
   public static final int STRING = 13;
   public static final int DIVISION = 27;
+  public static final int DO = 45;
   public static final int MULTIPLICACION = 26;
   public static final int MAS = 22;
   public static final String[] terminalNames = new String[] {
@@ -96,7 +99,10 @@ public class sym {
   "NOT",
   "XOR",
   "BREAK",
-  "CONTINUE"
+  "CONTINUE",
+  "WHILE",
+  "DO",
+  "MATCH"
   };
 }
 

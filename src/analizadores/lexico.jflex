@@ -80,6 +80,9 @@ ELSE="else"
 FOR="for"
 BREAK="break"
 CONTINUE="continue"
+WHILE="while"
+DO = "do"
+MATCH = "match"
 
 
 
@@ -99,6 +102,9 @@ BOOL = "bool"
 <YYINITIAL> {FOR} {return new Symbol(sym.FOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {BREAK} {return new Symbol(sym.BREAK, yyline, yycolumn,yytext());}
 <YYINITIAL> {CONTINUE} {return new Symbol(sym.CONTINUE, yyline, yycolumn,yytext());}
+<YYINITIAL> {WHILE} {return new Symbol(sym.WHILE, yyline, yycolumn,yytext());}
+<YYINITIAL> {DO} {return new Symbol(sym.DO, yyline, yycolumn,yytext());}
+<YYINITIAL> {MATCH} {return new Symbol(sym.MATCH, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}

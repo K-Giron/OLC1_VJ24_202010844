@@ -27,14 +27,13 @@ public class Main {
     public static void main(String[] args) {
         try {
             String texto = """
-
-                           /*For (i=2; i>=2; i--){
-                               println(i);
-                               if(i==1){
-                                   continue;
-                                }
-                                println(i*5);
-                           }*/
+                           //PRUEBA DE Match
+                           var j: int = 0;
+                           var k: int = 10;
+                           while (j <= k) {
+                               
+                               j++;
+                           }
                            
                            
                            
@@ -85,6 +84,8 @@ public class Main {
             LinkedList<Errores> errores = new LinkedList<>();
             errores.addAll(s.listaErrores);
             errores.addAll(p.listaErrores);
+            
+            
 
             for (var a : ast.getInstrucciones()) {
                 if (a == null) {

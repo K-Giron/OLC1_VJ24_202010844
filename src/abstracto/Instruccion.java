@@ -24,6 +24,14 @@ public abstract class Instruccion {
         this.col = col;
     }
 
+    //GETTERS AND SETTERS
+    public Tipo getTipo() {
+        return tipo;
+    }
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
     public abstract Object interpretar(Arbol arbol, tablaSimbolos tabla);
 
 }
