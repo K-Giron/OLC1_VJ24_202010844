@@ -77,6 +77,9 @@ COMENTARIOMULTIPLE= "/*"[^*]*"*"+([^/*][^*]*"*"+)*"/"
 IMPRIMIR="println"
 IF="if"
 ELSE="else"
+FOR="for"
+BREAK="break"
+CONTINUE="continue"
 
 
 
@@ -87,11 +90,15 @@ STRING = "string"
 CHAR = "char"
 BOOL = "bool"
 
+
 %%
 
 <YYINITIAL> {IMPRIMIR} {return new Symbol(sym.IMPRIMIR, yyline, yycolumn,yytext());}
 <YYINITIAL> {IF} {return new Symbol(sym.IF, yyline, yycolumn,yytext());}
 <YYINITIAL> {ELSE} {return new Symbol(sym.ELSE, yyline, yycolumn,yytext());}
+<YYINITIAL> {FOR} {return new Symbol(sym.FOR, yyline, yycolumn,yytext());}
+<YYINITIAL> {BREAK} {return new Symbol(sym.BREAK, yyline, yycolumn,yytext());}
+<YYINITIAL> {CONTINUE} {return new Symbol(sym.CONTINUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}

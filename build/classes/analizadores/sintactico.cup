@@ -14,6 +14,11 @@ import instrucciones.Print;
 import instrucciones.Declaracion;
 import instrucciones.AsignacionVar;
 import instrucciones.If;
+import instrucciones.For;
+import instrucciones.Break;
+import instrucciones.Continue;
+import instrucciones.Incremento;
+import instrucciones.Decremento;
 
 //expresiones
 import expresiones.Nativo;
@@ -57,15 +62,17 @@ action code
 
 //terminales
 terminal String CADENA, ENTERO, DECIMAL, BOOLEANO, CARACTER, ID,MUTABILIDAD;
-terminal FINCADENA, IMPRIMIR,INT,DOUBLE,STRING,CHAR,BOOL,DOSPUNTOS,IF,ELSE;
+terminal FINCADENA, IMPRIMIR,INT,DOUBLE,STRING,CHAR,BOOL,DOSPUNTOS,IF,ELSE,FOR;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MODULO, LLAVE1,LLAVE2;
 terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL;
 terminal OR, AND, NOT, XOR;
+terminal String BREAK,CONTINUE;
 
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
-nonterminal Instruccion IMPRESION,DECLARACION,ASIGNACION,IIF;
+nonterminal Instruccion IMPRESION,DECLARACION,ASIGNACION,IIF,IFOR,ACTFOR;
+nonterminal Instruccion BREAKK,CONTINUEE,INCREMENTO,DECREMENTO;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 
@@ -94,7 +101,12 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b)
 INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | DECLARACION:a                   {: RESULT = a; :}
                 | ASIGNACION:a                   {: RESULT = a; :}
-                | IIF:a                          {: RESULT = a; :}     
+                | IIF:a                          {: RESULT = a; :} 
+                | IFOR:a                         {: RESULT = a; :}
+                | BREAKK:a                       {: RESULT = a; :}
+                | CONTINUEE:a                    {: RESULT = a; :}
+                | INCREMENTO:a FINCADENA                  {: RESULT = a; :}
+                | DECREMENTO:a FINCADENA                   {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -112,6 +124,21 @@ IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {: RESULT = new I
         Nativo c = new Nativo(tipoDato.NULL, new Tipo(tipoDato.BOOLEANO), aleft, aright);
         RESULT = new If(c, a, aleft, aright); :}
         |ELSE IIF:a {: RESULT = a; :}
+;
+IFOR ::= FOR PAR1 ASIGNACION:a EXPRESION:b FINCADENA ACTFOR:c PAR2 LLAVE1 INSTRUCCIONES:d LLAVE2 
+            {: RESULT = new For(a,b,c,d,aleft,aright);  :}
+;
+ACTFOR ::= ID:a IGUAL EXPRESION:b {: RESULT = new AsignacionVar(a, b, aleft, aright); :}
+        | INCREMENTO:a {: RESULT = a; :}
+        | DECREMENTO:a {: RESULT = a; :}
+;
+BREAKK ::= BREAK:a FINCADENA {: RESULT = new Break(aleft, aright); :}
+;
+CONTINUEE ::= CONTINUE:a FINCADENA {: RESULT = new Continue(aleft, aright); :}
+;
+INCREMENTO ::= ID:a MAS MAS {: RESULT = new Incremento(a,aleft,aright);  :}
+;
+DECREMENTO ::= ID:a MENOS MENOS {: RESULT = new Decremento(a,aleft,aright);  :}
 ;
 TIPOS ::= INT {: RESULT = new Tipo(tipoDato.ENTERO); :}
         | DOUBLE {: RESULT = new Tipo(tipoDato.DECIMAL); :}

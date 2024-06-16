@@ -50,6 +50,12 @@ public class If extends Instruccion {
         if (bandera ) {
             for (var i : this.instrucciones) {
                 var resultado = i.interpretar(arbol, newTabla);
+                if (resultado instanceof Break) {
+                    return resultado;
+                }
+                if (resultado instanceof Continue) {
+                    return resultado;
+                }
                 //manejando el error de que no se haya retornado nada
                 if (resultado instanceof Errores) {
                     return resultado;
@@ -61,7 +67,19 @@ public class If extends Instruccion {
             if ((boolean) cond) {
                 for (var i : this.instrucciones) {
                     If.condicionEvaluada = true;
+                    if (i instanceof Break) {
+                        return i;
+                    }
+                    if (i instanceof Continue) {
+                        return i;
+                    }
                     var resultado = i.interpretar(arbol, newTabla);
+                    if (resultado instanceof Break) {
+                        return resultado;
+                    }
+                    if (resultado instanceof Continue) {
+                        return resultado;
+                    }
                     //manejando el error de que no se haya retornado nada
                     if (resultado instanceof Errores) {
                         return resultado;

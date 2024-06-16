@@ -27,6 +27,23 @@ public class Main {
     public static void main(String[] args) {
         try {
             String texto = """
+                           
+                           //prueba de for
+                           const i:int=210;
+                           //i++;
+                           i--;
+                           println(i);
+                           /*For (i=2; i>=2; i--){
+                               println(i);
+                               if(i==1){
+                                   continue;
+                                }
+                                println(i*5);
+                           }*/
+                           
+                           
+                           
+                           /*
                 var a:int=10;
                            println(\"prueba else\");
                          println(a);
@@ -47,7 +64,7 @@ public class Main {
                   println(a);
                   println(c);
 
-                /*esto es un comentario
+                esto es un comentario
                 multilinea
                 fdfs
                             var TEXTO:StrIng  = \"Mi variable\";
