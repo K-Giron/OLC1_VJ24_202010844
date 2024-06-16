@@ -40,7 +40,7 @@ parser code
     scanner s;
     parser(scanner s){this.s = s;}
 
-    public LinkedList<Errores> listaErrores = new LinkedList<>();
+    public static LinkedList<Errores> listaErrores = new LinkedList<>();
     
     public void syntax_error(Symbol s){
         listaErrores.add(new Errores("Error Sintactico Recuperable", "No se esperaba el componente "+ s.value , s.left, s.right));
@@ -80,14 +80,14 @@ nonterminal Instruccion BREAKK,CONTINUEE,INCREMENTO,DECREMENTO,IMATCH;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 
-
+precedence left MODULO;
 precedence left OR;
 precedence left AND;
 precedence left XOR;
 precedence right NOT;
 precedence left IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE;
 precedence left MAS, MENOS;
-precedence left MULTIPLICACION, DIVISION, MODULO;
+precedence left MULTIPLICACION, DIVISION;
 precedence left POTENCIA;
 precedence left UMENOS;
 

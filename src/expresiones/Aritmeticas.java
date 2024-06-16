@@ -36,6 +36,7 @@ public class Aritmeticas extends Instruccion {
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
+        //imprimir los valores de los operandos y la operacion
         Object opIzq = null, opDer = null, Unico = null;
         if (this.operandoUnico != null) {
             Unico = this.operandoUnico.interpretar(arbol, tabla);
@@ -51,6 +52,7 @@ public class Aritmeticas extends Instruccion {
             if (opDer instanceof Errores) {
                 return opDer;
             }
+            
         }
 
         return switch (operacion) {
@@ -178,15 +180,17 @@ public class Aritmeticas extends Instruccion {
     public Object resta(Object op1, Object op2) {
         var tipo1 = this.operando1.tipo.getTipo();
         var tipo2 = this.operando2.tipo.getTipo();
-
+    
         switch (tipo1) {
             case ENTERO -> {
                 switch (tipo2) {
                     case ENTERO -> {
+                        System.out.println("Entro a resta de entero con entero");
                         this.tipo.setTipo(tipoDato.ENTERO);
                         return (int) op1 - (int) op2;
                     }
                     case DECIMAL -> {
+                        System.out.println("Entro a resta de entero con decimal");
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (int) op1 - (double) op2;
                     }
@@ -202,10 +206,12 @@ public class Aritmeticas extends Instruccion {
             case DECIMAL -> {
                 switch (tipo2) {
                     case ENTERO -> {
+                        System.out.println("Entro a resta de decimal con entero");
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (double) op1 - (int) op2;
                     }
                     case DECIMAL -> {
+                        System.out.println("Entro a resta de decimal con decimal");
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (double) op1 - (double) op2;
                     }
@@ -409,17 +415,24 @@ public class Aritmeticas extends Instruccion {
     }
 
     public Object modulo(Object op1, Object op2) {
-        var tipo1 = this.operando1.tipo.getTipo();
+        try {
+
+            var tipo1 = this.operando1.tipo.getTipo();
         var tipo2 = this.operando2.tipo.getTipo();
+        //ver que valores se van a operar
+        System.out.println("op1: " + op1);
+        System.out.println("op2: " + op2);
 
         switch (tipo1) {
             case ENTERO -> {
                 switch (tipo2) {
                     case ENTERO -> {
-                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        System.out.println("Entro a modulo de entero con entero");
+                        this.tipo.setTipo(tipoDato.ENTERO);
                         return (int) op1 % (int) op2;
                     }
                     case DECIMAL -> {
+                        System.out.println("Entro a modulo de entero con decimal");
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (int) op1 % (double) op2;
                     }
@@ -431,10 +444,12 @@ public class Aritmeticas extends Instruccion {
             case DECIMAL -> {
                 switch (tipo2) {
                     case ENTERO -> {
+                        System.out.println("Entro a modulo de decimal con entero");
                         this.tipo.setTipo(tipoDato.DECIMAL);
-                        return (double) op1 % (int) op2;
+                        return (double) op1 % (double) op2;
                     }
                     case DECIMAL -> {
+                        System.out.println("Entro a modulo de decimal con decimal");
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (double) op1 % (double) op2;
                     }
@@ -447,6 +462,11 @@ public class Aritmeticas extends Instruccion {
                 return new Errores("SEMANTICO", "Modulo erroneo", this.linea, this.col);
             }
         }
+        } catch (Exception e) {
+            return new Errores("SEMANTICO", "Modulo erroneo", this.linea, this.col);
+            // TODO: handle exception
+        }
+        
     }
 
 
