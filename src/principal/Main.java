@@ -27,12 +27,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             String texto = """
-                           
-                           //prueba de for
-                           const i:int=210;
-                           //i++;
-                           i--;
-                           println(i);
+
                            /*For (i=2; i>=2; i--){
                                println(i);
                                if(i==1){

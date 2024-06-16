@@ -29,6 +29,7 @@ import expresiones.OperadoresRelacionales;
 import expresiones.Logicos;
 import expresiones.OperadoresLogicos;
 import expresiones.AccesoVar;
+import expresiones.Casteos;
 
 // parser
 parser code
@@ -146,6 +147,8 @@ TIPOS ::= INT {: RESULT = new Tipo(tipoDato.ENTERO); :}
         | CHAR {: RESULT = new Tipo(tipoDato.CARACTER); :}
         | BOOL {: RESULT = new Tipo(tipoDato.BOOLEANO); :}
 ;
+//CASTEOOS ::= PAR1 TIPOS:a PAR2 EXPRESION:b {: RESULT = new Casteos(b, a, aleft, aright); :}
+//;
 EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UMENOS
             | EXPRESION:a MAS EXPRESION:b   {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);   :}
             | EXPRESION:a MENOS EXPRESION:b {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);   :}
@@ -163,6 +166,7 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | EXPRESION:a AND EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);   :}
             | EXPRESION:a XOR EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.XOR, aleft, aright);   :}
             | NOT EXPRESION:a {:   RESULT = new Logicos(a, OperadoresLogicos.NOT, aleft, aright);   :}
+            | PAR1 TIPOS:a PAR2 EXPRESION:b {:   RESULT = new Casteos(b, a, aleft, aright);   :}
             | ENTERO:a      {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright );   :}
             | DECIMAL:a     {:   RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright );   :}
             | CADENA:a      {:   RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright );   :}
