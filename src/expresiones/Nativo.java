@@ -5,9 +5,7 @@
 package expresiones;
 
 import abstracto.Instruccion;
-import simbolo.Arbol;
-import simbolo.Tipo;
-import simbolo.tablaSimbolos;
+import simbolo.*;
 
 /**
  *
@@ -23,6 +21,18 @@ public class Nativo extends Instruccion{
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
+
+        //si el valor es de tipo cadena se le quitan las tabulaciones
+        if (this.tipo.getTipo() == tipoDato.CADENA) {
+            //reemplazar tabulaciones y saltos de linea
+            this.valor = this.valor.toString().replace("\\t", "\t").replace("\\n", "\n");
+            //reemplazar comillas dobles y simples
+            this.valor = this.valor.toString().replace("\\\"", "\"").replace("\\'", "'");
+            //reemplazar barra invertida
+            this.valor = this.valor.toString().replace("\\\\", "\\");
+
+        }
+
         return this.valor;
     }    
 }

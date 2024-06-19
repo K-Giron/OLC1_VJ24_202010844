@@ -65,7 +65,7 @@ BLANCOS=[\ \r\t\f\n]+
 ENTERO=[0-9]+
 DECIMAL=[0-9]+"."[0-9]+
 ID = [a-zA-Z][a-zA-Z0-9_]*
-CADENA = [\"]([^\"])*[\"]
+CADENA = \"(\\.|[^\"\\])*\"
 BOOLEANO="true"|"false"
 MUTABILIDAD = "var"|"const"
 CARACTER = [']([^\'])*[']
@@ -157,6 +157,7 @@ BOOL = "bool"
 <YYINITIAL> {BLANCOS} {}
 <YYINITIAL> {COMENTARIOSIMPLE} {}
 <YYINITIAL> {COMENTARIOMULTIPLE} {}
+
 
 
 <YYINITIAL> . { listaErrores.add(new Errores("Error lexico", "El caracter "+yytext()+" no pertence al lenguaje", yyline, yycolumn));}
