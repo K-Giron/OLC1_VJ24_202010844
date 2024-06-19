@@ -26,15 +26,31 @@ public class Incremento extends Instruccion{
         if (simbolo == null) {
             return new Errores("SEMANTICO", "No se encontro la variable " + id, this.linea, this.col);
         }
-        if (simbolo.getTipo().getTipo() != tipoDato.ENTERO) {
-            return new Errores("SEMANTICO", "La variable " + id + " no es de tipo entero", this.linea, this.col);
-        }
         // si la variable es no mutable no se puede modificar
         if (!simbolo.getMutabilidad()) {
             return new Errores("SEMANTICO", "La variable " + id + " es constante", this.linea, this.col);
         }
-        simbolo.setValor((int) simbolo.getValor() + 1);
+        // si la variable no es de tipo entero o double no se puede incrementar
+        if (simbolo.getTipo().getTipo() != tipoDato.ENTERO && simbolo.getTipo().getTipo() != tipoDato.DECIMAL) {
+            return new Errores("SEMANTICO", "La variable " + id + " no es de tipo numerico", this.linea, this.col);
+        }
+        // si la variable es de tipo entero
+        if (simbolo.getTipo().getTipo() == tipoDato.ENTERO) {
+            int valor = (int) simbolo.getValor();
+            simbolo.setValor(valor + 1);
+        }
+        // si la variable es de tipo double
+        if (simbolo.getTipo().getTipo() == tipoDato.DECIMAL) {
+            double valor = (double) simbolo.getValor();
+            simbolo.setValor(valor + 1);
+        }
+        
         return null;
     }
     
 }
+
+/*// si la variable es no mutable no se puede modificar
+        if (!simbolo.getMutabilidad()) {
+            return new Errores("SEMANTICO", "La variable " + id + " es constante", this.linea, this.col);
+        } */

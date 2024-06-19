@@ -20,13 +20,13 @@ public class Logicos extends Instruccion {
 
     //negacion 
     public Logicos(Instruccion operandoUnico, OperadoresLogicos operacion, int linea, int col) {
-        super(new Tipo(tipoDato.ENTERO), linea, col);
+        super(new Tipo(tipoDato.BOOLEANO), linea, col);
         this.operacion = operacion;
         this.operandoUnico = operandoUnico;
     }
     //cualquier operacion menos negacion
     public Logicos(Instruccion operando1, Instruccion operando2, OperadoresLogicos operacion, int linea, int col) {
-        super(new Tipo(tipoDato.ENTERO), linea, col);
+        super(new Tipo(tipoDato.BOOLEANO), linea, col);
         this.operando1 = operando1;
         this.operando2 = operando2;
         this.operacion = operacion;
