@@ -18,6 +18,14 @@ public class Nativo extends Instruccion{
         super(tipo, linea, col);
         this.valor = valor;
     }
+    //getters y setters
+    public Object getValor() {
+        return valor;
+    }
+    public void setValor(Object valor) {
+        this.valor = valor;
+    }
+    
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {

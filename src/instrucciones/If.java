@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import abstracto.Instruccion;
 import simbolo.*;
 import excepciones.Errores;
+import analizadores.*;;
 
 /**
  *
@@ -18,7 +19,6 @@ public class If extends Instruccion {
 
     private Instruccion condicion;
     private LinkedList<Instruccion> instrucciones;
-    private static boolean condicionEvaluada = false;
 
     public If(Instruccion condicion, LinkedList<Instruccion> instrucciones, int linea, int col) {
         super(new Tipo(tipoDato.VOID), linea, col);
@@ -39,15 +39,10 @@ public class If extends Instruccion {
             return new Errores("SEMANTICO", "Expresion invalida",
                     this.linea, this.col);
         }
-
+        //imprimir que valor tiene la condicion
+        System.out.println("Condicion: " + cond);
         var newTabla = new tablaSimbolos(tabla);
-        boolean bandera = false;
-        if (cond == tipoDato.NULL && If.condicionEvaluada==false) {
-            bandera = true;
-        }
-        
-        //bandera para ejecutar el else
-        if (bandera ) {
+        if ((boolean) cond) {
             for (var i : this.instrucciones) {
                 if (i instanceof Break) {
                     return i;
@@ -62,40 +57,14 @@ public class If extends Instruccion {
                 if (resultado instanceof Continue) {
                     return resultado;
                 }
-                //manejando el error de que no se haya retornado nada
                 if (resultado instanceof Errores) {
                     return resultado;
                 }
+                
             }
-        }
-        try {
-            //ejecutar el if
-            if ((boolean) cond) {
-                for (var i : this.instrucciones) {
-                    If.condicionEvaluada = true;
-                    if (i instanceof Break) {
-                        return i;
-                    }
-                    if (i instanceof Continue) {
-                        return i;
-                    }
-                    var resultado = i.interpretar(arbol, newTabla);
-                    if (resultado instanceof Break) {
-                        return resultado;
-                    }
-                    if (resultado instanceof Continue) {
-                        return resultado;
-                    }
-                    //manejando el error de que no se haya retornado nada
-                    if (resultado instanceof Errores) {
-                        return resultado;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return null;
-        }
-
+            //modificar una constante en el parser
+            parser.elseinstr = false;
+        }   
         return null;
 
     }

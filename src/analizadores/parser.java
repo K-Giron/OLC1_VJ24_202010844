@@ -23,6 +23,7 @@ import instrucciones.Decremento;
 import instrucciones.While;
 import instrucciones.DoWhile;
 import instrucciones.Match;
+import instrucciones.Else;
 import expresiones.Nativo;
 import expresiones.Aritmeticas;
 import expresiones.OperadoresAritmeticos;
@@ -493,6 +494,8 @@ public class parser extends java_cup.runtime.lr_parser {
     parser(scanner s){this.s = s;}
 
     public static LinkedList<Errores> listaErrores = new LinkedList<>();
+    public static boolean elseinstr = true;
+
     
     public void syntax_error(Symbol s){
         listaErrores.add(new Errores("Error Sintactico Recuperable", "No se esperaba el componente "+ s.value , s.left, s.right));
@@ -823,7 +826,9 @@ class CUP$parser$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		LinkedList<Instruccion> b = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new If(a, b, aleft, aright); 
+		 
+            RESULT = new If(a,b, aleft, aright);
+         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("IIF",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -835,9 +840,18 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		LinkedList<Instruccion> a = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-        Nativo c = new Nativo(tipoDato.NULL, new Tipo(tipoDato.BOOLEANO), aleft, aright);
-        RESULT = new If(c, a, aleft, aright); 
+		 
+        //imprimir el valor de elseinstr
+        System.out.println("el valor es :"+analizadores.parser.elseinstr); 
+        if (analizadores.parser.elseinstr){
+            RESULT = new Else(a, aleft, aright);
+            analizadores.parser.elseinstr = false;
+        }else{
+            System.out.println("No se cumple el formato de la instruccion ELSE");
+            parser.listaErrores.add(new Errores("Error Sintactico", "No se esperaba la instruccion ELSE", aleft, aright));
+        }
+            
+             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("IIF",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

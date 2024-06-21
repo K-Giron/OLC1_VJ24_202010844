@@ -22,6 +22,7 @@ import instrucciones.Decremento;
 import instrucciones.While;
 import instrucciones.DoWhile;
 import instrucciones.Match;
+import instrucciones.Else;
 
 //expresiones
 import expresiones.Nativo;
@@ -41,6 +42,8 @@ parser code
     parser(scanner s){this.s = s;}
 
     public static LinkedList<Errores> listaErrores = new LinkedList<>();
+    public static boolean elseinstr = true;
+
     
     public void syntax_error(Symbol s){
         listaErrores.add(new Errores("Error Sintactico Recuperable", "No se esperaba el componente "+ s.value , s.left, s.right));
@@ -126,10 +129,21 @@ DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
 ;
 ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
 ;
-IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {: RESULT = new If(a, b, aleft, aright); :}
-        |ELSE LLAVE1 INSTRUCCIONES:a LLAVE2 {:
-        Nativo c = new Nativo(tipoDato.NULL, new Tipo(tipoDato.BOOLEANO), aleft, aright);
-        RESULT = new If(c, a, aleft, aright); :}
+IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {: 
+            RESULT = new If(a,b, aleft, aright);
+         :}
+        |ELSE LLAVE1 INSTRUCCIONES:a LLAVE2 {: 
+        //imprimir el valor de elseinstr
+        System.out.println("el valor es :"+analizadores.parser.elseinstr); 
+        if (analizadores.parser.elseinstr){
+            RESULT = new Else(a, aleft, aright);
+            analizadores.parser.elseinstr = false;
+        }else{
+            System.out.println("No se cumple el formato de la instruccion ELSE");
+            parser.listaErrores.add(new Errores("Error Sintactico", "No se esperaba la instruccion ELSE", aleft, aright));
+        }
+            
+             :}
         |ELSE IIF:a {: RESULT = a; :}
 ;
 IFOR ::= FOR PAR1 ASIGNACION:a EXPRESION:b FINCADENA ACTFOR:c PAR2 LLAVE1 INSTRUCCIONES:d LLAVE2 
