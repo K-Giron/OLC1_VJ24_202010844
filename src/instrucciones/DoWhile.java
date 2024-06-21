@@ -46,12 +46,18 @@ public class DoWhile extends Instruccion{
             //ejecutar instrucciones
             for (var i : this.instrucciones) {
                 if (i instanceof Break) {
-                    return i;
+                    return null;
                 }
                 if (i instanceof Continue) {
-                    return i;
+                    break;
                 }
                 var res = i.interpretar(arbol, newTabla2);
+                if (res instanceof Break) {
+                    return null;
+                }
+                if (res instanceof Continue) {
+                    break;
+                }
                 if (res instanceof Errores) {
                     return res;
                 }

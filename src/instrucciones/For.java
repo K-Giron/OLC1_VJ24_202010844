@@ -69,9 +69,13 @@ public class For extends Instruccion {
                 if (resIns instanceof Continue) {
                     break;
                 }
+                if (resIns instanceof Errores) {
+                    return resIns;
+                }
             }
             //actualizar la variable
             var act = this.actualizacion.interpretar(arbol, newTabla);
+
             if (act instanceof Errores) {
                 return act;
             }

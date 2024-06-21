@@ -44,11 +44,15 @@ public class Casteos extends Instruccion {
             return new Errores("SEMANTICO", "No se puede convertir " + valor + " a " + this.expresion.tipo.getTipo(), this.linea, this.col);
         }
         if (this.expresion.tipo.getTipo() == tipoDato.CARACTER) {
+            //entra aca
             if (this.tipo.getTipo() == tipoDato.ENTERO) {
-                return (int) (char) valor;
+                var charValor = valor.toString().charAt(0);
+                return (int) charValor;
+
             }
             if (this.tipo.getTipo() == tipoDato.DECIMAL) {
-                return (double) (char) valor;
+                var charValor = valor.toString().charAt(0);
+                return (double) charValor;
             }
             return new Errores("SEMANTICO", "No se puede convertir " + valor + " a " + this.expresion.tipo.getTipo(), this.linea, this.col);
         }

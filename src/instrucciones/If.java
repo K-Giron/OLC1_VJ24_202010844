@@ -49,6 +49,12 @@ public class If extends Instruccion {
         //bandera para ejecutar el else
         if (bandera ) {
             for (var i : this.instrucciones) {
+                if (i instanceof Break) {
+                    return i;
+                }
+                if (i instanceof Continue) {
+                    return i;
+                }
                 var resultado = i.interpretar(arbol, newTabla);
                 if (resultado instanceof Break) {
                     return resultado;
