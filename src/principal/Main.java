@@ -14,6 +14,7 @@ import analizadores.scanner;
 import excepciones.Errores;
 import simbolo.Arbol;
 import simbolo.tablaSimbolos;
+import instrucciones.If;
 
 /**
  *
@@ -32,6 +33,10 @@ public class Main {
         //PruebaBreak();
         //ruebaFor();
         //PruebaLetra();
+        //crear una instancia de if
+
+        
+        
     }
     
     public static void Prueba(){

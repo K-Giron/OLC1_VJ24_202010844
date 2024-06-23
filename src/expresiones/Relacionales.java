@@ -23,6 +23,7 @@ public class Relacionales extends Instruccion {
         this.operando2 = operando2;
         this.operacion = operacion;
     }
+    
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {

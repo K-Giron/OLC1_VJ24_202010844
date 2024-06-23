@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import abstracto.Instruccion;
 import simbolo.*;
 import excepciones.Errores;
-import analizadores.*;;
+import analizadores.*;
 
 /**
  *
@@ -19,17 +19,24 @@ public class If extends Instruccion {
 
     private Instruccion condicion;
     private LinkedList<Instruccion> instrucciones;
+    private LinkedList<Instruccion> instruccionesElse;
+    private Instruccion elseIfInstruccion;
 
-    public If(Instruccion condicion, LinkedList<Instruccion> instrucciones, int linea, int col) {
+
+
+    public If(Instruccion condicion, LinkedList<Instruccion> instrucciones, LinkedList<Instruccion> instruccionesElse, Instruccion elseIfInstruccion, int linea, int col) {
         super(new Tipo(tipoDato.VOID), linea, col);
         this.condicion = condicion;
         this.instrucciones = instrucciones;
+        this.instruccionesElse = instruccionesElse;
+        this.elseIfInstruccion = elseIfInstruccion;
     }
 
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         var cond = this.condicion.interpretar(arbol, tabla);
+        
         if (cond instanceof Errores) {
             return cond;
         }
@@ -39,8 +46,8 @@ public class If extends Instruccion {
             return new Errores("SEMANTICO", "Expresion invalida",
                     this.linea, this.col);
         }
-        //imprimir que valor tiene la condicion
-        System.out.println("Condicion: " + cond);
+
+
         var newTabla = new tablaSimbolos(tabla);
         if ((boolean) cond) {
             for (var i : this.instrucciones) {
@@ -62,9 +69,35 @@ public class If extends Instruccion {
                 }
                 
             }
-            //modificar una constante en el parser
-            parser.elseinstr = false;
-        }   
+        }else{
+            if(this.instruccionesElse != null){
+                for (var i : this.instruccionesElse) {
+                    if (i instanceof Break) {
+                        return i;
+                    }
+                    if (i instanceof Continue) {
+                        return i;
+                    }
+                    var resultado = i.interpretar(arbol, newTabla);
+                    if (resultado instanceof Break) {
+                        return resultado;
+                    }
+                    if (resultado instanceof Continue) {
+                        return resultado;
+                    }
+                    if (resultado instanceof Errores) {
+                        return resultado;
+                    }
+                }
+            }
+
+            if (this.elseIfInstruccion != null) {
+                var res = this.elseIfInstruccion.interpretar(arbol, tabla);
+                if (res instanceof Errores) {
+                    return res;
+                }
+            }
+        } 
         return null;
 
     }
