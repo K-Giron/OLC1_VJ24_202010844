@@ -164,4 +164,4 @@ BOOL = "bool"
 
 
 
-<YYINITIAL> . { listaErrores.add(new Errores("Error lexico", "El caracter "+yytext()+" no pertence al lenguaje", yyline, yycolumn));}
+<YYINITIAL> . { listaErrores.add(new Errores("LEXICO", "El caracter "+yytext()+" no pertence al lenguaje", yyline, yycolumn));}

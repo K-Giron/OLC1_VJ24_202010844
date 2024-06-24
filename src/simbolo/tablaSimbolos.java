@@ -51,6 +51,15 @@ public class tablaSimbolos {
         this.nombre = nombre;
     }
 
+    public void listarSimbolos() {
+        for (Object i : this.tablaActual.values()) {
+            if (i instanceof Simbolo) {
+                Simbolo simbolo = (Simbolo) i;
+                System.out.println("ID: " + simbolo.getId() + " TIPO: " + simbolo.getTipo().getTipo());
+            }
+        }
+    }
+
     public boolean setVariable(Simbolo simbolo){
         Simbolo busqueda = (Simbolo) this.tablaActual.get(simbolo.getId().toLowerCase());
         if(busqueda == null){

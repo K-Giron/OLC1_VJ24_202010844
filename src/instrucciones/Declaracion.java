@@ -72,7 +72,7 @@ public class Declaracion extends Instruccion{
         //System.out.println(valorInterpretado);
 
         //crear la variable
-        Simbolo s = new Simbolo(this.tipo, this.identificador,valorInterpretado, esMutable);
+        Simbolo s = new Simbolo(this.tipo, this.identificador,valorInterpretado, esMutable, this.linea, this.col);
         //imprimir todo el simbolo
         //System.out.println(s.getId() + " " + s.getTipo().getTipo() + " el valor " + s.getValor() + " " + s.getMutabilidad());
 

@@ -9,15 +9,21 @@ import analizadores.parser;
 import analizadores.scanner;
 import excepciones.Errores;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import simbolo.Arbol;
+import simbolo.Simbolo;
 import simbolo.tablaSimbolos;
+import simbolo.SimboloTabla;
 
 
 /**
@@ -29,6 +35,13 @@ public class Ventana extends javax.swing.JFrame {
     /**
      * Creates new form Ventana
      */
+    //linkedlist de errores
+    LinkedList<Errores> erroresGlobal = new LinkedList<>();
+    //Linkedlist de simbolos
+    LinkedList<SimboloTabla> tablaSimbolosGlobal = new LinkedList<>();
+    //variable para el nombre del archivo
+
+    String nombreArchivo = "";
     public Ventana() {
         initComponents();
     }
@@ -100,6 +113,11 @@ public class Ventana extends javax.swing.JFrame {
         jMenu2.add(jMenuItem4);
 
         jMenuItem5.setText("Simbolos");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
@@ -157,6 +175,7 @@ public class Ventana extends javax.swing.JFrame {
             errores.addAll(p.listaErrores);
             
             
+            
 
             for (var a : ast.getInstrucciones()) {
                 if (a == null) {
@@ -167,6 +186,8 @@ public class Ventana extends javax.swing.JFrame {
                     errores.add((Errores) res);
                 }
             }
+
+            erroresGlobal = errores;
             textArea2.setText(ast.getConsola());
             System.out.println(ast.getConsola());
             
@@ -174,6 +195,19 @@ public class Ventana extends javax.swing.JFrame {
             for (var e : errores) {
                 System.out.println(e);
             }
+            //println simbolos
+            for (var d : tabla.getTablaActual().values()) {
+                if (d instanceof Simbolo) {
+                    Simbolo simbolo = (Simbolo) d;
+                    String mutabilidad = "";
+                    if (simbolo.getMutabilidad() == false){
+                        mutabilidad = "constante";
+                    } else {
+                        mutabilidad = "variable";
+                    }
+                    tablaSimbolosGlobal.add(new SimboloTabla(simbolo.getId(),mutabilidad, simbolo.getTipo().getTipo(), simbolo.getValor(), tabla.getNombre(), simbolo.getLinea(), simbolo.getColumna()));
+                }
+            }            
             
         } catch (Exception ex) {
             System.out.println("Algo salio mal");
@@ -189,6 +223,57 @@ public class Ventana extends javax.swing.JFrame {
         textArea2.setText(limpieza);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    public static void report(String title, LinkedList<Errores> list) {
+        String name = "Reporte de " + title + ".html";
+
+        String contenido = "<html>\n" +
+                "<head>\n" +
+                "<title>" + name + "</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<h1>" + name + " Lexicos y Sintacticos</h1>\n";
+
+        contenido += "<table border = \"1\">" +
+                "        <tr>\n" +
+                "            <th>Tipo</th>\n" +
+                "            <th>Descripción</th>\n" +
+                "            <th>Linea</th>\n" +
+                "            <th>Columna</th>\n" +
+                "        </tr>\n";
+
+        for (Errores error : list) {
+            System.out.println(error.getDesc());
+            contenido += "<tr>\n" +
+                    "    <td>"+ error.getTipo()+ "</td>\n" +
+                    "    <td>" + error.getDesc() + "</td>\n" +
+                    "    <td>" + error.getLinea() + "</td>\n" +
+                    "    <td>" + error.getColumna() + "</td>\n" +
+                    "</tr>\n";
+        }
+
+        contenido += "</table>\n" +
+                "</body>\n" +
+                "</html>";
+
+        try {
+            FileWriter fileWriter = new FileWriter("src/reportes/" + name);
+
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(contenido);
+
+            bufferedWriter.close();
+            fileWriter.close();
+
+            System.out.println("Se ha creado el archivo HTML exitosamente: " + name);
+        } catch (IOException e) {
+            System.out.println("Errore al crear un archivo");
+            e.printStackTrace();
+        }
+
+    
+    }
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
@@ -197,6 +282,7 @@ public class Ventana extends javax.swing.JFrame {
         chooser.setFileFilter(extension);
         chooser.showOpenDialog(null);
         File archivo = chooser.getSelectedFile();
+        //acceder al nombre del archivo
         
         try{
             
@@ -211,6 +297,7 @@ public class Ventana extends javax.swing.JFrame {
             }
             
             textArea1.setText(contenido);
+            nombreArchivo = archivo.getName();
             
         }catch (Exception ex){
             JOptionPane.showMessageDialog(null,"Archivo no encontrado","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -221,8 +308,92 @@ public class Ventana extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
         //analizadores.pa
+        //si nombre de archivo esta vacio
+        if(nombreArchivo.equals("")){
+            nombreArchivo = "Reporte de errores";
+        }
+        //si la lista de errores esta vacia
+        if(erroresGlobal.isEmpty()){
+            JOptionPane.showMessageDialog(null,"No hay errores que reportar","ERROR",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        report(nombreArchivo,erroresGlobal);
+
         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        //si nombre de archivo esta vacio
+        if (nombreArchivo.equals("")) {
+            nombreArchivo = "Tabla";
+        }
+        //si la lista de errores esta vacia
+        if (tablaSimbolosGlobal.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay simbolos que reportar", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        reporteSimbolo(nombreArchivo, tablaSimbolosGlobal);
+        
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    public static void reporteSimbolo(String title, LinkedList<SimboloTabla> list) {
+        String name = "Reporte de Simbolos de " + title + ".html";
+
+        String contenido = "<html>\n" +
+                "<head>\n" +
+                "<title>" + name + "</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<h1>" + name + " </h1>\n";
+
+        contenido += "<table border = \"1\">" +
+                "        <tr>\n" +
+                "            <th>Id</th>\n" +
+                "            <th>Mutabilidad</th>\n" +
+                "            <th>Tipo</th>\n" +
+                "            <th>Entorno</th>\n" +
+                "            <th>Valor</th>\n" +
+                "            <th>Linea</th>\n" +
+                "            <th>Columna</th>\n" +
+                "        </tr>\n";
+
+        for (SimboloTabla sim : list) {
+            contenido += "<tr>\n" +
+                    "    <td>"+ sim.getId()+ "</td>\n" +
+                    "    <td>" + sim.getMutabilidad() + "</td>\n" +
+                    "    <td>" + sim.getTipo() + "</td>\n" +
+                    "    <td>" + sim.getEntorno() + "</td>\n" +
+                    "    <td>" + sim.getValor() + "</td>\n" +
+                    "    <td>" + sim.getLinea() + "</td>\n" +
+                    "    <td>" + sim.getColumna() + "</td>\n" +
+                    "</tr>\n";
+        }
+
+        contenido += "</table>\n" +
+                "</body>\n" +
+                "</html>";
+
+        try {
+            FileWriter fileWriter = new FileWriter("src/reportes/" + name);
+
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(contenido);
+
+            bufferedWriter.close();
+            fileWriter.close();
+
+            System.out.println("Se ha creado el archivo HTML exitosamente: " + name);
+        } catch (IOException e) {
+            System.out.println("Errore al crear un archivo");
+            e.printStackTrace();
+        }
+
+    
+    }
+
+
 
     /**
      * @param args the command line arguments

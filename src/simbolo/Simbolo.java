@@ -13,6 +13,8 @@ public class Simbolo {
     private String id;
     private Object valor;
     private boolean mutabilidad;
+    private int linea;
+    private int columna;
 
     public Simbolo(Tipo tipo, String id) {
         this.tipo = tipo;
@@ -25,11 +27,13 @@ public class Simbolo {
         this.valor = valor;
     }
     //nuevo constructor para la mutabilidad
-    public Simbolo(Tipo tipo, String id, Object valor, boolean mutabilidad) {
+    public Simbolo(Tipo tipo, String id, Object valor, boolean mutabilidad, int linea, int columna) {
         this.tipo = tipo;
         this.id = id;
         this.valor = valor;
         this.mutabilidad = mutabilidad;
+        this.linea = linea;
+        this.columna = columna;
     }
 
     public Tipo getTipo() {
@@ -62,6 +66,18 @@ public class Simbolo {
     }
     public void setMutabilidad(boolean mutabilidad){
         this.mutabilidad = mutabilidad;
+    }
+    public int getLinea() {
+        return linea;
+    }
+    public void setLinea(int linea) {
+        this.linea = linea;
+    }
+    public int getColumna() {
+        return columna;
+    }
+    public void setColumna(int columna) {
+        this.columna = columna;
     }
     
 }
