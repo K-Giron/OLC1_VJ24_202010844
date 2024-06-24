@@ -17,20 +17,20 @@ public class sym {
   public static final int LLAVE1 = 29;
   public static final int IMPRIMIR = 10;
   public static final int ENTERO = 3;
-  public static final int XOR = 41;
+  public static final int XOR = 43;
   public static final int DIFERENTE = 36;
   public static final int DOUBLE = 12;
-  public static final int CONTINUE = 43;
+  public static final int CONTINUE = 45;
   public static final int INT = 11;
   public static final int FOR = 19;
-  public static final int MATCH = 46;
-  public static final int NOT = 40;
-  public static final int AND = 39;
+  public static final int MATCH = 48;
+  public static final int NOT = 42;
+  public static final int AND = 41;
   public static final int FINCADENA = 9;
   public static final int IGUAL = 37;
   public static final int MAYORQUE = 33;
   public static final int CARACTER = 6;
-  public static final int OR = 38;
+  public static final int OR = 40;
   public static final int BOOL = 15;
   public static final int MUTABILIDAD = 8;
   public static final int IF = 17;
@@ -43,16 +43,18 @@ public class sym {
   public static final int MODULO = 28;
   public static final int MENOS = 23;
   public static final int MENOR = 34;
-  public static final int BREAK = 42;
+  public static final int BREAK = 44;
   public static final int MAYOR = 35;
   public static final int MENORQUE = 32;
   public static final int POTENCIA = 25;
+  public static final int BARRABAJA = 39;
+  public static final int FLECHA = 38;
   public static final int ELSE = 18;
-  public static final int WHILE = 44;
+  public static final int WHILE = 46;
   public static final int BOOLEANO = 5;
   public static final int STRING = 13;
   public static final int DIVISION = 27;
-  public static final int DO = 45;
+  public static final int DO = 47;
   public static final int MULTIPLICACION = 26;
   public static final int MAS = 22;
   public static final String[] terminalNames = new String[] {
@@ -94,6 +96,8 @@ public class sym {
   "MAYOR",
   "DIFERENTE",
   "IGUAL",
+  "FLECHA",
+  "BARRABAJA",
   "OR",
   "AND",
   "NOT",

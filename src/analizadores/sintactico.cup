@@ -5,6 +5,7 @@ package analizadores;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import abstracto.Instruccion;
+import abstracto.Casos;
 import simbolo.Tipo;
 import simbolo.tipoDato;
 import excepciones.Errores;
@@ -71,15 +72,17 @@ action code
 terminal String CADENA, ENTERO, DECIMAL, BOOLEANO, CARACTER, ID,MUTABILIDAD;
 terminal FINCADENA, IMPRIMIR,INT,DOUBLE,STRING,CHAR,BOOL,DOSPUNTOS,IF,ELSE,FOR;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MODULO, LLAVE1,LLAVE2;
-terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL;
+terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA;
 terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
 
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
+nonterminal LinkedList<Casos> CASOS;
 nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion IMPRESION,DECLARACION,ASIGNACION,IIF,IFOR,ACTFOR,IWHILE,IDOWHILE;
 nonterminal Instruccion BREAKK,CONTINUEE,INCREMENTO,DECREMENTO,IMATCH;
+nonterminal Casos CASO,DEFAULT;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 
@@ -171,8 +174,17 @@ IWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {: RESULT =
 IDOWHILE ::= DO LLAVE1 INSTRUCCIONES:a LLAVE2 WHILE PAR1 EXPRESION:b PAR2 FINCADENA {: RESULT = new DoWhile(b, a, aleft, aright); :}
 ;
 
-IMATCH ::= MATCH EXPRESION:a LLAVE1 INSTRUCCIONES:b LLAVE2 {: //RESULT = new Match(a, b, aleft, aright); 
-:}
+IMATCH ::= MATCH EXPRESION:a LLAVE1 CASOS:b DEFAULT:c LLAVE2 {: RESULT = new Match(a, b, c, aleft, aright); :}
+        | MATCH EXPRESION:a LLAVE1 CASOS:b LLAVE2 {: RESULT = new Match(a, b, null, aleft, aright); :}
+        | MATCH EXPRESION:a LLAVE1 DEFAULT:c LLAVE2 {: RESULT = new Match(a, null, c, aleft, aright); :}
+;
+CASOS ::= CASOS:a CASO:b {: RESULT = a; RESULT.add(b); :}
+        | CASO:a {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+;
+
+CASO ::= EXPRESION:a FLECHA LLAVE1 INSTRUCCIONES:b LLAVE2 {: RESULT = new Casos(a, b, false, aleft, aright); :}
+;
+DEFAULT ::= BARRABAJA FLECHA LLAVE1 INSTRUCCIONES:a LLAVE2 {: RESULT = new Casos(null, a, true, aleft, aright); :}
 ;
 
 

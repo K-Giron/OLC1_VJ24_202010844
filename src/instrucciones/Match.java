@@ -21,55 +21,69 @@ public class Match extends Instruccion {
     private Casos defecto;
 
     
-    public Match(Instruccion expresion, LinkedList<Casos> casos, int linea, int col) {
+    public Match(Instruccion expresion, LinkedList<Casos> casos,Casos defecto, int linea, int col) {
         super(new Tipo(tipoDato.VOID), linea, col);
         this.expresion = expresion;
         this.casos = casos;
+        this.defecto = defecto;
     }
 
 
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        //creamos un nuevo entorno
         var newTabla = new tablaSimbolos(tabla);
+        boolean bandera = false;
 
-        //validar la condicion -> Booleano
-        var cond = this.expresion.interpretar(arbol, newTabla);
-        if (cond instanceof Errores) {
-            return cond;
-        }
-
-        //verificar que sea booleano la expresion
-        if(this.expresion.tipo.getTipo() != tipoDato.BOOLEANO){
-            return new Errores("SEMANTICO", "La expresion debe ser booleana", this.linea, this.col);
-        }
-
-        //recorrer los casos
+        //recorrer los casos y ver si alguno coincide con la expresion
         for (var c : this.casos) {
-            //recorriendo la lista de casos y ejecutando las instrucciones
-            if (c instanceof Casos) {
-                var res = c.interpretar(arbol, newTabla);
-                if (res instanceof Errores) {
-                    return res;
+            var exp = this.expresion.interpretar(arbol, tabla);
+            var caso = c.getExpresion().interpretar(arbol, tabla);
+            if (exp instanceof Errores) {
+                return exp;
+            }
+            if (caso instanceof Errores) {
+                return caso;
+            }
+            if (exp.equals(caso)) {
+                for (var i : c.getInstrucciones()) {
+                    if (i instanceof Break) {
+                        return i;
+                    }
+                    if (i instanceof Continue) {
+                        return i;
+                    }
+                    var resultado = i.interpretar(arbol, newTabla);
+                    if (resultado instanceof Errores) {
+                        return resultado;
+                    }
+                    if ( resultado instanceof Break || resultado instanceof Continue) {
+                        return resultado;
+                    }
+                }
+                bandera = true;
+            }
+        }
+
+        //si no se encontro ningun caso que coincida con la expresion
+        if (!bandera) {
+            for (var i : this.defecto.getInstrucciones()) {
+                if (i instanceof Break) {
+                    return i;
+                }
+                if (i instanceof Continue) {
+                    return i;
+                }
+                var resultado = i.interpretar(arbol, newTabla);
+                if (resultado instanceof Errores) {
+                    return resultado;
+                }
+                if ( resultado instanceof Break || resultado instanceof Continue) {
+                    return resultado;
                 }
             }
-
-            return new Errores ("SEMANTICO", "No se encontro un caso", this.linea, this.col);
-            
         }
 
-        //verificar si hay un defecto
-        if (this.defecto != null) {
-            var res = this.defecto.interpretar(arbol, newTabla);
-            if (res instanceof Errores) {
-                return res;
-            }
-            return new Errores ("SEMANTICO", "No se encontro un caso", this.linea, this.col);
-        }
-
-
-        
 
         return null;
     }

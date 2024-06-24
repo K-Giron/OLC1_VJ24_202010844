@@ -59,6 +59,8 @@ NOT="!"
 XOR="^"
 FINCADENA=";"
 DOSPUNTOS=":"
+FLECHA="=>"
+BARRABAJA="_"
 
 //expresiones regulares
 BLANCOS=[\ \r\t\f\n]+
@@ -154,6 +156,8 @@ BOOL = "bool"
 <YYINITIAL> {AND} {return new Symbol(sym.AND, yyline, yycolumn,yytext());}
 <YYINITIAL> {NOT} {return new Symbol(sym.NOT, yyline, yycolumn,yytext());}
 <YYINITIAL> {XOR} {return new Symbol(sym.XOR, yyline, yycolumn,yytext());}
+<YYINITIAL> {FLECHA} {return new Symbol(sym.FLECHA, yyline, yycolumn,yytext());}
+<YYINITIAL> {BARRABAJA} {return new Symbol(sym.BARRABAJA, yyline, yycolumn,yytext());}
 <YYINITIAL> {BLANCOS} {}
 <YYINITIAL> {COMENTARIOSIMPLE} {}
 <YYINITIAL> {COMENTARIOMULTIPLE} {}
