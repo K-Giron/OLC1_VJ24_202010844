@@ -8,6 +8,10 @@ import abstracto.Instruccion;
 import analizadores.parser;
 import analizadores.scanner;
 import excepciones.Errores;
+import instrucciones.AsignacionVar;
+import instrucciones.Declaracion;
+import instrucciones.Metodo;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -169,23 +173,36 @@ public class Ventana extends javax.swing.JFrame {
             var tabla = new tablaSimbolos();
             tabla.setNombre("GLOBAL");
             ast.setConsola("");
-            //unir las listas de errores
+            ast.setTablaGlobal(tabla);
             LinkedList<Errores> errores = new LinkedList<>();
             errores.addAll(s.listaErrores);
             errores.addAll(p.listaErrores);
             
-            
-            
 
+            //primera vuelta metodos
             for (var a : ast.getInstrucciones()) {
                 if (a == null) {
                     continue;
                 }
-                var res = a.interpretar(ast, tabla);
-                if (res instanceof Errores) {
-                    errores.add((Errores) res);
+                if (a instanceof Metodo) {
+                    ast.addFunciones(a);
+                }
+                //se agregan funciones  y structs
+            }
+            //segunda vuelta declaraciones y asignaciones etc
+            for (var a : ast.getInstrucciones()) {
+                if (a == null) {
+                    continue;
+                }
+
+                if (a instanceof Declaracion || a instanceof AsignacionVar) {
+                    var resultadoInterpretar = a.interpretar(ast, tabla);
+                    if (resultadoInterpretar instanceof Errores) {
+                        errores.add((Errores) resultadoInterpretar);
+                    }
                 }
             }
+            //tercera vuelta start with main
 
             erroresGlobal = errores;
             textArea2.setText(ast.getConsola());

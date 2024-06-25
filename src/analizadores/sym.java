@@ -44,6 +44,7 @@ public class sym {
   public static final int MENOS = 23;
   public static final int MENOR = 34;
   public static final int BREAK = 44;
+  public static final int VOID = 49;
   public static final int MAYOR = 35;
   public static final int MENORQUE = 32;
   public static final int POTENCIA = 25;
@@ -106,7 +107,8 @@ public class sym {
   "CONTINUE",
   "WHILE",
   "DO",
-  "MATCH"
+  "MATCH",
+  "VOID"
   };
 }
 

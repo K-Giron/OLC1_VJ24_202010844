@@ -24,6 +24,7 @@ import instrucciones.While;
 import instrucciones.DoWhile;
 import instrucciones.Match;
 import instrucciones.Else;
+import instrucciones.Metodo;
 
 //expresiones
 import expresiones.Nativo;
@@ -75,6 +76,8 @@ terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MOD
 terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA;
 terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
+terminal VOID;
+
 
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -85,6 +88,7 @@ nonterminal Instruccion BREAKK,CONTINUEE,INCREMENTO,DECREMENTO,IMATCH;
 nonterminal Casos CASO,DEFAULT;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
+nonterminal Instruccion METODO;
 
 
 precedence left OR;
@@ -120,6 +124,7 @@ INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | IWHILE:a                      {: RESULT = a; :}
                 | IDOWHILE:a                    {: RESULT = a; :}
                 | IMATCH:a                      {: RESULT = a; :}
+                | METODO:a                      {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -133,6 +138,8 @@ DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
 ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
 ;
 
+METODO ::= TIPOS:a ID:b PAR1 PAR2 LLAVE1 INSTRUCCIONES:c LLAVE2   {:   RESULT=new Metodo(b, c, a, aleft, aright );   :}
+;
 
 IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {:
                                 RESULT = new If(a,b,null,null, aleft, aright);
@@ -168,6 +175,7 @@ TIPOS ::= INT {: RESULT = new Tipo(tipoDato.ENTERO); :}
         | STRING {: RESULT = new Tipo(tipoDato.CADENA); :}
         | CHAR {: RESULT = new Tipo(tipoDato.CARACTER); :}
         | BOOL {: RESULT = new Tipo(tipoDato.BOOLEANO); :}
+        | VOID {: RESULT = new Tipo(tipoDato.VOID); :}
 ;
 IWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {: RESULT = new While(a, b, aleft, aright); :}
 ;
