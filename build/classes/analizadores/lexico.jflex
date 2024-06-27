@@ -61,6 +61,8 @@ FINCADENA=";"
 DOSPUNTOS=":"
 FLECHA="=>"
 BARRABAJA="_"
+COMA=","
+
 
 //expresiones regulares
 BLANCOS=[\ \r\t\f\n]+
@@ -86,6 +88,7 @@ WHILE="while"
 DO = "do"
 MATCH = "match"
 VOID = "void"
+STARTWITH = "start_with"
 
 
 
@@ -109,11 +112,13 @@ BOOL = "bool"
 <YYINITIAL> {DO} {return new Symbol(sym.DO, yyline, yycolumn,yytext());}
 <YYINITIAL> {MATCH} {return new Symbol(sym.MATCH, yyline, yycolumn,yytext());}
 <YYINITIAL> {VOID} {return new Symbol(sym.VOID, yyline, yycolumn,yytext());}
+<YYINITIAL> {STARTWITH} {return new Symbol(sym.STARTWITH, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}
 <YYINITIAL> {CHAR} {return new Symbol(sym.CHAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {BOOL} {return new Symbol(sym.BOOL, yyline, yycolumn,yytext());}
+
 
 
 <YYINITIAL> {DECIMAL} {return new Symbol(sym.DECIMAL, yyline, yycolumn,yytext());}
@@ -160,6 +165,8 @@ BOOL = "bool"
 <YYINITIAL> {XOR} {return new Symbol(sym.XOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {FLECHA} {return new Symbol(sym.FLECHA, yyline, yycolumn,yytext());}
 <YYINITIAL> {BARRABAJA} {return new Symbol(sym.BARRABAJA, yyline, yycolumn,yytext());}
+<YYINITIAL> {COMA} {return new Symbol(sym.COMA, yyline, yycolumn,yytext());}
+
 <YYINITIAL> {BLANCOS} {}
 <YYINITIAL> {COMENTARIOSIMPLE} {}
 <YYINITIAL> {COMENTARIOMULTIPLE} {}

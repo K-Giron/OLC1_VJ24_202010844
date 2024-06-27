@@ -11,6 +11,7 @@ import excepciones.Errores;
 import instrucciones.AsignacionVar;
 import instrucciones.Declaracion;
 import instrucciones.Metodo;
+import instrucciones.StartWith;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -203,6 +204,20 @@ public class Ventana extends javax.swing.JFrame {
                 }
             }
             //tercera vuelta start with main
+            StartWith start = null;
+            for (var a: ast.getInstrucciones()){
+                if (a == null){
+                    continue;
+                }
+                if (a instanceof StartWith startWith){
+                    start = startWith;
+                    break;
+                }
+            }
+            var resultadoInterpretar = start.interpretar(ast, tabla);
+            if (resultadoInterpretar instanceof Errores) {
+                System.out.println("Error en start with");
+            }
 
             erroresGlobal = errores;
             textArea2.setText(ast.getConsola());
@@ -224,7 +239,8 @@ public class Ventana extends javax.swing.JFrame {
                     }
                     tablaSimbolosGlobal.add(new SimboloTabla(simbolo.getId(),mutabilidad, simbolo.getTipo().getTipo(), simbolo.getValor(), tabla.getNombre(), simbolo.getLinea(), simbolo.getColumna()));
                 }
-            }            
+            } 
+         
             
         } catch (Exception ex) {
             System.out.println("Algo salio mal");

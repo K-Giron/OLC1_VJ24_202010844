@@ -9,6 +9,7 @@ import abstracto.Casos;
 import simbolo.Tipo;
 import simbolo.tipoDato;
 import excepciones.Errores;
+import java.util.HashMap;
 
 //instrucciones
 import instrucciones.Print;
@@ -25,6 +26,8 @@ import instrucciones.DoWhile;
 import instrucciones.Match;
 import instrucciones.Else;
 import instrucciones.Metodo;
+import instrucciones.StartWith;
+import instrucciones.Llamada;
 
 //expresiones
 import expresiones.Nativo;
@@ -73,14 +76,17 @@ action code
 terminal String CADENA, ENTERO, DECIMAL, BOOLEANO, CARACTER, ID,MUTABILIDAD;
 terminal FINCADENA, IMPRIMIR,INT,DOUBLE,STRING,CHAR,BOOL,DOSPUNTOS,IF,ELSE,FOR;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MODULO, LLAVE1,LLAVE2;
-terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA;
+terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA,COMA;
 terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
-terminal VOID;
+terminal VOID,STARTWITH;
 
 
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
+nonterminal LinkedList<HashMap> PARAMS;
+nonterminal Instruccion ISTARTWITH;
+nonterminal LinkedList<Instruccion> PARAMSCALL;
 nonterminal LinkedList<Casos> CASOS;
 nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion IMPRESION,DECLARACION,ASIGNACION,IIF,IFOR,ACTFOR,IWHILE,IDOWHILE;
@@ -89,6 +95,9 @@ nonterminal Casos CASO,DEFAULT;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal Instruccion METODO;
+nonterminal Instruccion LLAMADA;
+
+
 
 
 precedence left OR;
@@ -125,6 +134,8 @@ INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | IDOWHILE:a                    {: RESULT = a; :}
                 | IMATCH:a                      {: RESULT = a; :}
                 | METODO:a                      {: RESULT = a; :}
+                | ISTARTWITH:a                    {: RESULT = a; :}
+                | LLAMADA:a                     {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -138,8 +149,40 @@ DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
 ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
 ;
 
-METODO ::= TIPOS:a ID:b PAR1 PAR2 LLAVE1 INSTRUCCIONES:c LLAVE2   {:   RESULT=new Metodo(b, c, a, aleft, aright );   :}
+METODO ::= TIPOS:a ID:b PAR1 PARAMS:p PAR2 LLAVE1 INSTRUCCIONES:c LLAVE2    {:   RESULT= new Metodo(b, p, c, a, aleft, aright );   :}
+        |  TIPOS:a ID:b PAR1 PAR2 LLAVE1 INSTRUCCIONES:c LLAVE2             {:   RESULT= new Metodo(b, new LinkedList<HashMap>(), c, a, aleft, aright );   :}
 ;
+LLAMADA ::= ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA      {:  RESULT= new Llamada(a, b, aleft, aright);    :}
+          | ID:a PAR1 PAR2 FINCADENA                   {:  RESULT= new Llamada(a, new LinkedList<Instruccion>(), aleft, aright);    :}    
+;
+
+PARAMS ::= PARAMS:a COMA TIPOS:b ID:c   {:  
+                                            RESULT = a;
+                                            var hm2= new HashMap<String, Object>();
+                                            hm2.put("id", c);
+                                            hm2.put("tipo", b);
+                                            RESULT.add(hm2);
+                                        :}
+        | TIPOS:a ID:b                  {:  RESULT = new LinkedList<HashMap>(); 
+                                            var hm = new HashMap<String, Object>();
+                                            hm.put("id",b);
+                                            hm.put("tipo", a);
+                                            RESULT.add(hm);
+                                        :}
+;
+
+ISTARTWITH ::=  STARTWITH ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA     {:   RESULT = new StartWith(a, b, aleft, aright );   :}
+            | STARTWITH ID:a PAR1 PAR2 FINCADENA                  {:   RESULT = new StartWith(a, new LinkedList<Instruccion>(), aleft, aright );   :}
+;
+
+PARAMSCALL ::= PARAMSCALL:a COMA EXPRESION:e    {:  RESULT = a;
+                                                    RESULT.add(e);
+                                                :}
+            | EXPRESION:a                       {:  RESULT = new LinkedList<Instruccion>(); 
+                                                    RESULT.add(a);
+                                                :}
+;
+
 
 IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {:
                                 RESULT = new If(a,b,null,null, aleft, aright);
@@ -213,6 +256,7 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | EXPRESION:a OR EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.OR, aleft, aright);   :}
             | EXPRESION:a AND EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);   :}
             | EXPRESION:a XOR EXPRESION:b {:   RESULT = new Logicos(a, b, OperadoresLogicos.XOR, aleft, aright);   :}
+            | LLAMADA:a {:   RESULT = a;   :}
             | NOT EXPRESION:a {:   RESULT = new Logicos(a, OperadoresLogicos.NOT, aleft, aright);   :}
             | PAR1 TIPOS:a PAR2 EXPRESION:b {:   RESULT = new Casteos(b, a, aleft, aright);   :}
             | ENTERO:a      {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright );   :}

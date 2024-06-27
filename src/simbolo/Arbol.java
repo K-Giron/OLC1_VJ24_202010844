@@ -74,6 +74,10 @@ public class Arbol {
     }
 
     public void addFunciones(Instruccion funcion) {
+        //llamar a getFuncion y si es null agregar funcion, si no, no agregar
+        /*if (getFuncion(((Metodo) funcion).id) != null) {
+            return;
+        }*/
         this.funciones.add(funcion);
     }
 

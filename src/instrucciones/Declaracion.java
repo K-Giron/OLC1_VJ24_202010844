@@ -28,6 +28,13 @@ public class Declaracion extends Instruccion{
         this.valor = valor;
         this.mutabilidad = mutabilidad;
     }
+
+    public Declaracion(String identificador, Tipo tipo, int linea, int col) {
+        super(tipo, linea, col);
+        this.identificador = identificador;
+        this.valor =null;
+        this.mutabilidad = "var";
+    }
     
 
     @Override
@@ -36,14 +43,15 @@ public class Declaracion extends Instruccion{
         //pasar a minusculas la mutabilidad
         this.mutabilidad = this.mutabilidad.toLowerCase();
         //interpretar la expresion
-        var valorInterpretado = this.valor.interpretar(arbol, tabla);
+        var valorInterpretado = (this.valor == null) ? this.valoresDefault() : this.valor.interpretar(arbol, tabla);
         //validar si hubo un error
         if(valorInterpretado instanceof Errores){
             return valorInterpretado;
         }
-        //validamos los tipos
-        if(this.valor.tipo.getTipo() != this.tipo.getTipo()){
-            return new Errores("Semantico", "El tipo de la variable no coincide con el valor asignado", this.linea, this.col);
+        if (this.valor != null) {
+            if (this.valor.tipo.getTipo() != this.tipo.getTipo()) {
+                return new Errores("SEMANTICO", "Tipos erroneos", this.linea, this.col);
+            }
         }
         //validar si la variable es constante
         if(this.mutabilidad.equals("const")){
@@ -64,7 +72,7 @@ public class Declaracion extends Instruccion{
             }else if (this.tipo.getTipo() == tipoDato.CADENA){
                 valorInterpretado = "";
             }else if (this.tipo.getTipo() == tipoDato.CARACTER){
-                valorInterpretado = '0';
+                valorInterpretado = '\u0000';
             }else{
                 return new Errores("Semantico", "El tipo de dato no es valido", this.linea, this.col);}
         }
@@ -82,6 +90,23 @@ public class Declaracion extends Instruccion{
         }
 
         return null;
+    }
+
+    public Object valoresDefault(){
+        return switch (this.tipo.getTipo()) {
+            case BOOLEANO ->
+                true;
+            case CADENA ->
+                "";
+            case CARACTER ->
+                '\u0000';
+            case ENTERO ->
+                0;
+            case DECIMAL ->
+                0.0;
+            default ->
+                null;
+        };
     }
     
     

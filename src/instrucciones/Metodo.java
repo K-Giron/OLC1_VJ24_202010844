@@ -17,13 +17,13 @@ import simbolo.*;
  */
 public class Metodo extends Instruccion {
     public String id;
-    //public LinkedList<HashMap> parametros;
+    public LinkedList<HashMap> parametros;
     public LinkedList<Instruccion> instrucciones;
 
-    public Metodo(String id,/* LinkedList<HashMap> parametros,*/ LinkedList<Instruccion> instrucciones, Tipo tipo, int linea, int col) {
+    public Metodo(String id, LinkedList<HashMap> parametros, LinkedList<Instruccion> instrucciones, Tipo tipo, int linea, int col) {
         super(tipo, linea, col);
         this.id = id;
-        //this.parametros = parametros;
+        this.parametros = parametros;
         this.instrucciones = instrucciones;
     }
 
@@ -44,4 +44,6 @@ public class Metodo extends Instruccion {
         }
         return null;
     }
+
+    
 }
