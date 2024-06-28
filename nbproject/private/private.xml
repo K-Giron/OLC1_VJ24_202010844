@@ -4,12 +4,20 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/analizadores/Generador.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/principal/Main.java</file>
             <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/principal/Ventana.java</file>
             <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/Aritmeticas.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/If.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/OperadoresAritmeticos.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/analizadores/scanner.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/AsignacionVar.java</file>
             <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/analizadores/parser.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/analizadores/sintactico.cup</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/principal/Main.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/simbolo/Arbol.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/abstracto/Instruccion.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/Metodo.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/Casteos.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/Nativo.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/analizadores/lexico.jflex</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/AccesoVar.java</file>
         </group>
     </open-files>
 </project-private>

@@ -28,6 +28,7 @@ import instrucciones.Else;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
 import instrucciones.Llamada;
+import instrucciones.DeclaracionVectores;
 
 //expresiones
 import expresiones.Nativo;
@@ -79,7 +80,8 @@ terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MOD
 terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA,COMA;
 terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
-terminal VOID,STARTWITH;
+terminal VOID, STARTWITH;
+terminal CORCHE1,CORCHE2;
 
 
 //no terminales
@@ -96,6 +98,10 @@ nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal Instruccion METODO;
 nonterminal Instruccion LLAMADA;
+nonterminal Instruccion DECLARACIONVECTORES;
+nonterminal LinkedList<Instruccion> VECTORESLISTA;
+nonterminal LinkedList<LinkedList<Instruccion>> VECTORESLISTADOSDIMENSIONES;
+
 
 
 
@@ -136,6 +142,7 @@ INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | METODO:a                      {: RESULT = a; :}
                 | ISTARTWITH:a                    {: RESULT = a; :}
                 | LLAMADA:a                     {: RESULT = a; :}
+                | DECLARACIONVECTORES:a         {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -183,6 +190,26 @@ PARAMSCALL ::= PARAMSCALL:a COMA EXPRESION:e    {:  RESULT = a;
                                                 :}
 ;
 
+DECLARACIONVECTORES ::= MUTABILIDAD:a ID:b DOSPUNTOS TIPOS:c CORCHE1 CORCHE2 IGUAL CORCHE1 VECTORESLISTA:d CORCHE2 FINCADENA 
+                                        {:
+                                        System.out.println("aqui");  
+                                        RESULT = new DeclaracionVectores(a, b, c, d,null, 1,aleft, aright); :}
+                    | MUTABILIDAD:a ID:b DOSPUNTOS TIPOS:c CORCHE1 CORCHE2 CORCHE1 CORCHE2 IGUAL CORCHE1 VECTORESLISTADOSDIMENSIONES:d CORCHE2 FINCADENA 
+                                        {:
+                                        System.out.println("aqui 2");  
+                                        RESULT = new DeclaracionVectores(a, b, c,null, d, 2,aleft, aright);
+                                         :}
+;
+
+VECTORESLISTA ::= VECTORESLISTA:a COMA EXPRESION:b {: RESULT = a; RESULT.add(b); :}
+                | EXPRESION:a {: RESULT = new LinkedList<Instruccion>(); RESULT.add(a); :}
+;
+
+VECTORESLISTADOSDIMENSIONES ::= VECTORESLISTADOSDIMENSIONES:a COMA CORCHE1 VECTORESLISTA:b CORCHE2 {: RESULT = a; RESULT.add(b); :}
+                            | CORCHE1 VECTORESLISTA:a CORCHE2 
+                                    {: 
+                                    RESULT = new LinkedList<LinkedList<Instruccion>>(); LinkedList<Instruccion> aux = new LinkedList<>(); aux = a; RESULT.add(aux); :}
+;
 
 IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {:
                                 RESULT = new If(a,b,null,null, aleft, aright);

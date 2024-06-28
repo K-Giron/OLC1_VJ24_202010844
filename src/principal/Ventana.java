@@ -10,6 +10,7 @@ import analizadores.scanner;
 import excepciones.Errores;
 import instrucciones.AsignacionVar;
 import instrucciones.Declaracion;
+import instrucciones.DeclaracionVectores;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
 
@@ -202,6 +203,14 @@ public class Ventana extends javax.swing.JFrame {
                         errores.add((Errores) resultadoInterpretar);
                     }
                 }
+                //declaracion de vectores
+                if (a instanceof DeclaracionVectores) {
+                    var resultadoInterpretar = a.interpretar(ast, tabla);
+                    if (resultadoInterpretar instanceof Errores) {
+                        errores.add((Errores) resultadoInterpretar);
+                    }
+                }
+                
             }
             //tercera vuelta start with main
             StartWith start = null;

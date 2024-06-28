@@ -45,7 +45,9 @@ public class sym {
   public static final int MODULO = 28;
   public static final int MENOS = 23;
   public static final int MENOR = 34;
+  public static final int CORCHE2 = 53;
   public static final int BREAK = 45;
+  public static final int CORCHE1 = 52;
   public static final int VOID = 50;
   public static final int MAYOR = 35;
   public static final int MENORQUE = 32;
@@ -112,7 +114,9 @@ public class sym {
   "DO",
   "MATCH",
   "VOID",
-  "STARTWITH"
+  "STARTWITH",
+  "CORCHE1",
+  "CORCHE2"
   };
 }
 

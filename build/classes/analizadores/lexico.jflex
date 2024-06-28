@@ -38,6 +38,8 @@ import excepciones.Errores;
 //simbolos del sistema
 PAR1="("
 PAR2=")"
+CORCHE1="["
+CORCHE2="]"
 LLAVE1="{"
 LLAVE2="}"
 MAS="+"
@@ -62,6 +64,9 @@ DOSPUNTOS=":"
 FLECHA="=>"
 BARRABAJA="_"
 COMA=","
+
+
+
 
 
 //expresiones regulares
@@ -143,6 +148,8 @@ BOOL = "bool"
 <YYINITIAL> {DOSPUNTOS} {return new Symbol(sym.DOSPUNTOS, yyline, yycolumn,yytext());}
 <YYINITIAL> {PAR1} {return new Symbol(sym.PAR1, yyline, yycolumn,yytext());}
 <YYINITIAL> {PAR2} {return new Symbol(sym.PAR2, yyline, yycolumn,yytext());}
+<YYINITIAL> {CORCHE1} {return new Symbol(sym.CORCHE1, yyline, yycolumn,yytext());}
+<YYINITIAL> {CORCHE2} {return new Symbol(sym.CORCHE2, yyline, yycolumn,yytext());}
 <YYINITIAL> {LLAVE1} {return new Symbol(sym.LLAVE1, yyline, yycolumn,yytext());}
 <YYINITIAL> {LLAVE2} {return new Symbol(sym.LLAVE2, yyline, yycolumn,yytext());}
 
@@ -166,6 +173,8 @@ BOOL = "bool"
 <YYINITIAL> {FLECHA} {return new Symbol(sym.FLECHA, yyline, yycolumn,yytext());}
 <YYINITIAL> {BARRABAJA} {return new Symbol(sym.BARRABAJA, yyline, yycolumn,yytext());}
 <YYINITIAL> {COMA} {return new Symbol(sym.COMA, yyline, yycolumn,yytext());}
+
+
 
 <YYINITIAL> {BLANCOS} {}
 <YYINITIAL> {COMENTARIOSIMPLE} {}

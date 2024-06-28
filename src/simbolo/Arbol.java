@@ -20,6 +20,7 @@ public class Arbol {
     private tablaSimbolos tablaGlobal;
     public LinkedList<Errores> errores;
     public LinkedList<Instruccion> funciones;
+    public int contador;
 
     public Arbol(LinkedList<Instruccion> instrucciones) {
         this.instrucciones = instrucciones;
@@ -27,6 +28,7 @@ public class Arbol {
         this.tablaGlobal = new tablaSimbolos();
         this.errores = new LinkedList<>();
         this.funciones = new LinkedList<>();
+        this.contador = 0;
     }
 
     public LinkedList<Instruccion> getFunciones() {
@@ -90,6 +92,11 @@ public class Arbol {
             }
         }
         return null;
+    }
+
+    public int getContador() {
+        this.contador++;
+        return this.contador;
     }
 
 }
