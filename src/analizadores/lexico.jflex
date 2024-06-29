@@ -100,6 +100,7 @@ LIST = "list"
 NEW = "new"
 APPEND = "append"
 REMOVE = "remove"
+ROUND = "round"
 
 
 
@@ -130,6 +131,7 @@ BOOL = "bool"
 <YYINITIAL> {NEW} {return new Symbol(sym.NEW, yyline, yycolumn,yytext());}
 <YYINITIAL> {APPEND} {return new Symbol(sym.APPEND, yyline, yycolumn,yytext());}
 <YYINITIAL> {REMOVE} {return new Symbol(sym.REMOVE, yyline, yycolumn,yytext());}
+<YYINITIAL> {ROUND} {return new Symbol(sym.ROUND, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}

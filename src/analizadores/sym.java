@@ -65,6 +65,7 @@ public class sym {
   public static final int BOOLEANO = 5;
   public static final int STRING = 13;
   public static final int DIVISION = 27;
+  public static final int ROUND = 60;
   public static final int DO = 49;
   public static final int MULTIPLICACION = 26;
   public static final int MAS = 22;
@@ -128,7 +129,8 @@ public class sym {
   "NEW",
   "LIST",
   "APPEND",
-  "REMOVE"
+  "REMOVE",
+  "ROUND"
   };
 }
 
