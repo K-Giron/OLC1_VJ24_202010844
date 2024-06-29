@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import abstracto.Instruccion;
 import excepciones.Errores;
+import expresiones.Return;
 import simbolo.*;
 
 /**
@@ -62,12 +63,18 @@ public class For extends Instruccion {
                 if (i instanceof Continue) {
                     break;
                 }
+                if (i instanceof Return) {
+                    return i;
+                }
                 var resIns = i.interpretar(arbol, newTabla2);
                 if (resIns instanceof Break) {
                     return null;
                 }
                 if (resIns instanceof Continue) {
                     break;
+                }
+                if (resIns instanceof Return) {
+                    return resIns;
                 }
                 if (resIns instanceof Errores) {
                     return resIns;

@@ -22,6 +22,7 @@ public class Arbol {
     public LinkedList<Instruccion> funciones;
     public int contador;
 
+
     public Arbol(LinkedList<Instruccion> instrucciones) {
         this.instrucciones = instrucciones;
         this.consola = "";

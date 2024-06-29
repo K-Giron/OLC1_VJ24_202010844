@@ -10,6 +10,7 @@ import abstracto.Instruccion;
 import simbolo.*;
 import excepciones.Errores;
 import analizadores.*;
+import expresiones.Return;
 
 /**
  *
@@ -57,6 +58,9 @@ public class If extends Instruccion {
                 if (i instanceof Continue) {
                     return i;
                 }
+                if (i instanceof Return) {
+                    return i;
+                }
                 var resultado = i.interpretar(arbol, newTabla);
                 if (resultado instanceof Break) {
                     return resultado;
@@ -64,6 +68,11 @@ public class If extends Instruccion {
                 if (resultado instanceof Continue) {
                     return resultado;
                 }
+                
+                if (resultado instanceof Return) {
+                    return resultado;
+                }
+
                 if (resultado instanceof Errores) {
                     return resultado;
                 }
@@ -78,11 +87,17 @@ public class If extends Instruccion {
                     if (i instanceof Continue) {
                         return i;
                     }
+                    if (i instanceof Return) {
+                        return i;
+                    }
                     var resultado = i.interpretar(arbol, newTabla);
                     if (resultado instanceof Break) {
                         return resultado;
                     }
                     if (resultado instanceof Continue) {
+                        return resultado;
+                    }
+                    if (resultado instanceof Return) {
                         return resultado;
                     }
                     if (resultado instanceof Errores) {

@@ -6,6 +6,7 @@ package instrucciones;
 
 import abstracto.Instruccion;
 import excepciones.Errores;
+import expresiones.Return;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,6 +39,9 @@ public class Metodo extends Instruccion {
             //si llega break o continue
             if (resultado instanceof Break || resultado instanceof Continue) {
                 return new Errores("SEMANTICO", "Sentencia fuera de ciclo", linea, col);
+            }
+            if (i instanceof Return) {
+                return i;
             }
 
             // return;

@@ -70,9 +70,7 @@ public class Llamada extends Instruccion {
             }
 
             var resultadoFuncion = metodo.interpretar(arbol, newTabla);
-            if (resultadoFuncion instanceof Errores) {
-                return resultadoFuncion;
-            }
+            return resultadoFuncion;
 
         }
         return null;

@@ -6,6 +6,7 @@ package instrucciones;
 
 import abstracto.Instruccion;
 import excepciones.Errores;
+import expresiones.Return;
 import simbolo.Arbol;
 import simbolo.Simbolo;
 import simbolo.Tipo;
@@ -43,7 +44,20 @@ public class Declaracion extends Instruccion{
         //pasar a minusculas la mutabilidad
         this.mutabilidad = this.mutabilidad.toLowerCase();
         //interpretar la expresion
-        var valorInterpretado = (this.valor == null) ? this.valoresDefault() : this.valor.interpretar(arbol, tabla);
+        Object valorInterpretado;
+        if (this.valor == null){
+            valorInterpretado =this.valoresDefault(); 
+        }else{
+            valorInterpretado =this.valor.interpretar(arbol, tabla);            
+        }
+        //validar si viene un tipo return y obtener el valor
+        if (valorInterpretado instanceof Return){
+            //actualizar el valor y su tipo
+            this.valor.tipo.setTipo(((Return) valorInterpretado).tipo.getTipo());
+            valorInterpretado = ((Return) valorInterpretado).expresion.interpretar(arbol, tabla);
+        }
+
+
         //validar si hubo un error
         if(valorInterpretado instanceof Errores){
             return valorInterpretado;
@@ -54,12 +68,12 @@ public class Declaracion extends Instruccion{
             }
         }
         //validar si la variable es constante
-        if(this.mutabilidad.equals("const")){
-            esMutable = false;
-        }else if(this.mutabilidad.equals("var")){
-            esMutable = true;
-        }else {
-            return new Errores("Semantico", "El tipo de mutabilidad no es valido", this.linea, this.col);
+        switch (this.mutabilidad) {
+            case "const" -> esMutable = false;
+            case "var" -> esMutable = true;
+            default -> {
+                return new Errores("Semantico", "El tipo de mutabilidad no es valido", this.linea, this.col);
+            }
         }
         //validar para cada tipo de dato cuando la variable solo se declara
         if (valorInterpretado== tipoDato.NULL ){

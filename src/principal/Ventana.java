@@ -178,9 +178,8 @@ public class Ventana extends javax.swing.JFrame {
             ast.setTablaGlobal(tabla);
             LinkedList<Errores> errores = new LinkedList<>();
             errores.addAll(s.listaErrores);
-            errores.addAll(p.listaErrores);
+            errores.addAll(p.listaErrores);            
             
-
             //primera vuelta metodos
             for (var a : ast.getInstrucciones()) {
                 if (a == null) {

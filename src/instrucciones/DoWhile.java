@@ -7,6 +7,7 @@ package instrucciones;
 import java.util.LinkedList;
 import abstracto.Instruccion;
 import excepciones.Errores;
+import expresiones.Return;
 import simbolo.*;
 
 /**
@@ -51,12 +52,18 @@ public class DoWhile extends Instruccion{
                 if (i instanceof Continue) {
                     break;
                 }
+                if (i instanceof Return) {
+                    return i;
+                }
                 var res = i.interpretar(arbol, newTabla2);
                 if (res instanceof Break) {
                     return null;
                 }
                 if (res instanceof Continue) {
                     break;
+                }
+                if (res instanceof Return) {
+                    return res;
                 }
                 if (res instanceof Errores) {
                     return res;

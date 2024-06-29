@@ -38,6 +38,7 @@ public class sym {
   public static final int ID = 7;
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
+  public static final int RETURN = 54;
   public static final int STARTWITH = 51;
   public static final int error = 1;
   public static final int COMA = 40;
@@ -116,7 +117,8 @@ public class sym {
   "VOID",
   "STARTWITH",
   "CORCHE1",
-  "CORCHE2"
+  "CORCHE2",
+  "RETURN"
   };
 }
 

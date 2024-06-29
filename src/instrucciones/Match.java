@@ -9,6 +9,7 @@ import abstracto.Instruccion;
 import java.util.LinkedList;
 
 import excepciones.Errores;
+import expresiones.Return;
 import simbolo.*;
 
 /**
@@ -53,13 +54,17 @@ public class Match extends Instruccion {
                     if (i instanceof Continue) {
                         return i;
                     }
+                    if (i instanceof Return) {
+                        return i;
+                    }
                     var resultado = i.interpretar(arbol, newTabla);
                     if (resultado instanceof Errores) {
                         return resultado;
                     }
-                    if ( resultado instanceof Break || resultado instanceof Continue) {
+                    if ( resultado instanceof Break || resultado instanceof Continue || resultado instanceof Return) {
                         return resultado;
                     }
+
                 }
                 bandera = true;
             }
@@ -74,11 +79,14 @@ public class Match extends Instruccion {
                 if (i instanceof Continue) {
                     return i;
                 }
+                if (i instanceof Return) {
+                    return i;
+                }
                 var resultado = i.interpretar(arbol, newTabla);
                 if (resultado instanceof Errores) {
                     return resultado;
                 }
-                if ( resultado instanceof Break || resultado instanceof Continue) {
+                if ( resultado instanceof Break || resultado instanceof Continue || resultado instanceof Return) {
                     return resultado;
                 }
             }

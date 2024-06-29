@@ -94,6 +94,7 @@ DO = "do"
 MATCH = "match"
 VOID = "void"
 STARTWITH = "start_with"
+RETURN = "return"
 
 
 
@@ -118,6 +119,7 @@ BOOL = "bool"
 <YYINITIAL> {MATCH} {return new Symbol(sym.MATCH, yyline, yycolumn,yytext());}
 <YYINITIAL> {VOID} {return new Symbol(sym.VOID, yyline, yycolumn,yytext());}
 <YYINITIAL> {STARTWITH} {return new Symbol(sym.STARTWITH, yyline, yycolumn,yytext());}
+<YYINITIAL> {RETURN} {return new Symbol(sym.RETURN, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}
