@@ -39,6 +39,7 @@ import expresiones.OperadoresLogicos;
 import expresiones.AccesoVar;
 import expresiones.Casteos;
 import expresiones.Return;
+import expresiones.AccesoVec;
 
 // parser
 parser code
@@ -305,5 +306,7 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | BOOLEANO:a    {:  RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
             | CARACTER:a    {:  RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright );   :}
             | ID:a          {:   RESULT= new AccesoVar(a, aleft,aright);   :}
+            | ID:a CORCHE1 EXPRESION:b CORCHE2 {: RESULT = new AccesoVec(a, b,null, aleft, aright);   :}
+            | ID:a CORCHE1 EXPRESION:b CORCHE2 CORCHE1 EXPRESION:c CORCHE2 {: RESULT = new AccesoVec(a, b, c, aleft, aright);   :}
             | PAR1 EXPRESION:a PAR2 {:   RESULT = a;   :}
 ;
