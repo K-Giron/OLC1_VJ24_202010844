@@ -46,6 +46,7 @@ import expresiones.Casteos;
 import expresiones.Return;
 import expresiones.AccesoVec;
 import expresiones.AccesoList;
+import expresiones.Remove;
 
 // parser
 parser code
@@ -88,7 +89,7 @@ terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
 terminal VOID, STARTWITH;
 terminal CORCHE1,CORCHE2,RETURN;
-terminal NEW,LIST,APPEND;
+terminal NEW,LIST,APPEND,REMOVE;
 
 
 //no terminales
@@ -111,6 +112,7 @@ nonterminal LinkedList<LinkedList<Instruccion>> VECTORESLISTADOSDIMENSIONES;
 nonterminal Instruccion IRETURN;
 nonterminal Instruccion DECLARACIONLISTA;
 nonterminal Instruccion IAPPEND;
+nonterminal Instruccion IREMOVE;
 
 
 
@@ -154,6 +156,7 @@ INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | IRETURN:a                     {: RESULT = a; :}
                 | DECLARACIONLISTA:a             {: RESULT = a; :}
                 | IAPPEND:a                     {: RESULT = a; :}
+                | IREMOVE:a                     {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -246,6 +249,7 @@ DECLARACIONLISTA ::= LIST MENOR TIPOS:a MAYOR ID:b IGUAL NEW LIST PAR1 PAR2 FINC
 
 IAPPEND ::= ID:a PUNTO APPEND PAR1 EXPRESION:b PAR2 FINCADENA {: RESULT = new Append(a, b, aleft, aright); :}
 ;
+
 
 IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {:
                                 RESULT = new If(a,b,null,null, aleft, aright);
@@ -356,5 +360,6 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
                                                 RESULT = new AccesoVec(a, b,null, aleft, aright);   
                                                 :}
             | ID:a CORCHE1 EXPRESION:b CORCHE2 CORCHE1 EXPRESION:c CORCHE2 {: RESULT = new AccesoVec(a, b, c, aleft, aright);   :}
+            | ID:a PUNTO REMOVE PAR1 EXPRESION:b PAR2 {: RESULT = new Remove(a, b, aleft, aright); :}
             | PAR1 EXPRESION:a PAR2 {:   RESULT = a;   :}
 ;

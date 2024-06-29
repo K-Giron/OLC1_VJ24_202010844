@@ -202,22 +202,22 @@ public class Ventana extends javax.swing.JFrame {
 
                 if (a instanceof Declaracion || a instanceof AsignacionVar) {
                     var resultadoInterpretar = a.interpretar(ast, tabla);
-                    if (resultadoInterpretar instanceof Errores) {
-                        errores.add((Errores) resultadoInterpretar);
+                    if (resultadoInterpretar instanceof Errores errores1) {
+                        errores.add(errores1);
                     }
                 }
                 //declaracion de vectores
                 if (a instanceof DeclaracionVectores || a instanceof AsignacionVec) {
                     var resultadoInterpretar = a.interpretar(ast, tabla);
-                    if (resultadoInterpretar instanceof Errores) {
-                        errores.add((Errores) resultadoInterpretar);
+                    if (resultadoInterpretar instanceof Errores errores1) {
+                        errores.add(errores1);
                     }
                 }
                 //listas
-                if (a instanceof DeclaracionLista || a instanceof AsignacionList || a instanceof Append) {
+                if (a instanceof DeclaracionLista || a instanceof AsignacionList || a instanceof Append ) {
                     var resultadoInterpretar = a.interpretar(ast, tabla);
-                    if (resultadoInterpretar instanceof Errores) {
-                        errores.add((Errores) resultadoInterpretar);
+                    if (resultadoInterpretar instanceof Errores errores1) {
+                        errores.add(errores1);
                     }
                 }
                 
@@ -248,8 +248,7 @@ public class Ventana extends javax.swing.JFrame {
             }
             //println simbolos
             for (var d : tabla.getTablaActual().values()) {
-                if (d instanceof Simbolo) {
-                    Simbolo simbolo = (Simbolo) d;
+                if (d instanceof Simbolo simbolo) {
                     String mutabilidad = "";
                     if (simbolo.getMutabilidad() == false){
                         mutabilidad = "constante";
