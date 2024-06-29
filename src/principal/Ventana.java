@@ -14,6 +14,7 @@ import instrucciones.Declaracion;
 import instrucciones.DeclaracionVectores;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
+import instrucciones.DeclaracionLista;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -205,6 +206,13 @@ public class Ventana extends javax.swing.JFrame {
                 }
                 //declaracion de vectores
                 if (a instanceof DeclaracionVectores || a instanceof AsignacionVec) {
+                    var resultadoInterpretar = a.interpretar(ast, tabla);
+                    if (resultadoInterpretar instanceof Errores) {
+                        errores.add((Errores) resultadoInterpretar);
+                    }
+                }
+                //listas
+                if (a instanceof DeclaracionLista ) {
                     var resultadoInterpretar = a.interpretar(ast, tabla);
                     if (resultadoInterpretar instanceof Errores) {
                         errores.add((Errores) resultadoInterpretar);

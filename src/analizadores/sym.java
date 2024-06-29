@@ -40,6 +40,7 @@ public class sym {
   public static final int DECIMAL = 4;
   public static final int RETURN = 54;
   public static final int STARTWITH = 51;
+  public static final int NEW = 55;
   public static final int error = 1;
   public static final int COMA = 40;
   public static final int CADENA = 2;
@@ -57,6 +58,7 @@ public class sym {
   public static final int FLECHA = 38;
   public static final int ELSE = 18;
   public static final int WHILE = 47;
+  public static final int LIST = 56;
   public static final int BOOLEANO = 5;
   public static final int STRING = 13;
   public static final int DIVISION = 27;
@@ -118,7 +120,9 @@ public class sym {
   "STARTWITH",
   "CORCHE1",
   "CORCHE2",
-  "RETURN"
+  "RETURN",
+  "NEW",
+  "LIST"
   };
 }
 

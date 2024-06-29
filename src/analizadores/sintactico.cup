@@ -28,6 +28,7 @@ import instrucciones.StartWith;
 import instrucciones.Llamada;
 import instrucciones.DeclaracionVectores;
 import instrucciones.AsignacionVec;
+import instrucciones.DeclaracionLista;
 
 //expresiones
 import expresiones.Nativo;
@@ -83,6 +84,7 @@ terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
 terminal VOID, STARTWITH;
 terminal CORCHE1,CORCHE2,RETURN;
+terminal NEW,LIST;
 
 
 //no terminales
@@ -103,6 +105,7 @@ nonterminal Instruccion DECLARACIONVECTORES;
 nonterminal LinkedList<Instruccion> VECTORESLISTA;
 nonterminal LinkedList<LinkedList<Instruccion>> VECTORESLISTADOSDIMENSIONES;
 nonterminal Instruccion IRETURN;
+nonterminal Instruccion DECLARACIONLISTA;
 
 
 
@@ -144,6 +147,7 @@ INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | LLAMADA:a                     {: RESULT = a; :}
                 | DECLARACIONVECTORES:a         {: RESULT = a; :}
                 | IRETURN:a                     {: RESULT = a; :}
+                | DECLARACIONLISTA:a             {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -215,6 +219,9 @@ VECTORESLISTADOSDIMENSIONES ::= VECTORESLISTADOSDIMENSIONES:a COMA CORCHE1 VECTO
                             | CORCHE1 VECTORESLISTA:a CORCHE2 
                                     {: 
                                     RESULT = new LinkedList<LinkedList<Instruccion>>(); LinkedList<Instruccion> aux = new LinkedList<>(); aux = a; RESULT.add(aux); :}
+;
+
+DECLARACIONLISTA ::= LIST MENOR TIPOS:a MAYOR ID:b IGUAL NEW LIST PAR1 PAR2 FINCADENA {: RESULT = new DeclaracionLista(b, a, aleft, aright); :}
 ;
 
 IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {:
