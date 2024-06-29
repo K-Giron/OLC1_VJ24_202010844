@@ -15,6 +15,8 @@ import instrucciones.DeclaracionVectores;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
 import instrucciones.DeclaracionLista;
+import instrucciones.AsignacionList;
+import instrucciones.Append;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -212,7 +214,7 @@ public class Ventana extends javax.swing.JFrame {
                     }
                 }
                 //listas
-                if (a instanceof DeclaracionLista ) {
+                if (a instanceof DeclaracionLista || a instanceof AsignacionList || a instanceof Append) {
                     var resultadoInterpretar = a.interpretar(ast, tabla);
                     if (resultadoInterpretar instanceof Errores) {
                         errores.add((Errores) resultadoInterpretar);

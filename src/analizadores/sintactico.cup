@@ -29,6 +29,9 @@ import instrucciones.Llamada;
 import instrucciones.DeclaracionVectores;
 import instrucciones.AsignacionVec;
 import instrucciones.DeclaracionLista;
+import instrucciones.AsignacionList;
+import instrucciones.Append;
+
 
 //expresiones
 import expresiones.Nativo;
@@ -42,6 +45,7 @@ import expresiones.AccesoVar;
 import expresiones.Casteos;
 import expresiones.Return;
 import expresiones.AccesoVec;
+import expresiones.AccesoList;
 
 // parser
 parser code
@@ -79,12 +83,12 @@ action code
 terminal String CADENA, ENTERO, DECIMAL, BOOLEANO, CARACTER, ID,MUTABILIDAD;
 terminal FINCADENA, IMPRIMIR,INT,DOUBLE,STRING,CHAR,BOOL,DOSPUNTOS,IF,ELSE,FOR;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, POTENCIA, MULTIPLICACION, DIVISION, MODULO, LLAVE1,LLAVE2;
-terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA,COMA;
+terminal IGUALACION, MENORQUE, MAYORQUE, MENOR, MAYOR, DIFERENTE,IGUAL,FLECHA,BARRABAJA,COMA,PUNTO;
 terminal OR, AND, NOT, XOR;
 terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
 terminal VOID, STARTWITH;
 terminal CORCHE1,CORCHE2,RETURN;
-terminal NEW,LIST;
+terminal NEW,LIST,APPEND;
 
 
 //no terminales
@@ -106,6 +110,7 @@ nonterminal LinkedList<Instruccion> VECTORESLISTA;
 nonterminal LinkedList<LinkedList<Instruccion>> VECTORESLISTADOSDIMENSIONES;
 nonterminal Instruccion IRETURN;
 nonterminal Instruccion DECLARACIONLISTA;
+nonterminal Instruccion IAPPEND;
 
 
 
@@ -148,6 +153,7 @@ INSTRUCCION ::=  IMPRESION:a                    {:  RESULT = a; :}
                 | DECLARACIONVECTORES:a         {: RESULT = a; :}
                 | IRETURN:a                     {: RESULT = a; :}
                 | DECLARACIONLISTA:a             {: RESULT = a; :}
+                | IAPPEND:a                     {: RESULT = a; :}
                 | error FINCADENA {: :}
 ;
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -159,7 +165,21 @@ DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
                 RESULT = new Declaracion(b,c, a,d, aleft, aright); :}
 ;
 ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
-            | ID:a CORCHE1 EXPRESION:b CORCHE2 IGUAL EXPRESION:c FINCADENA {: RESULT = new AsignacionVec(a, c, b,null, aleft, aright); :}
+            | ID:a CORCHE1 EXPRESION:b CORCHE2 IGUAL EXPRESION:c FINCADENA {:
+                                                                            //objeto instruccion y probar si es asignacionVec, sino probar AsignacionList
+                                                                            
+                                                                            Instruccion asigVec = new AsignacionVec(a, c, b,null, aleft, aright);
+                                                                            if (asigVec instanceof AsignacionVec){
+                                                                                RESULT = asigVec;
+                                                                            }else{
+                                                                                Instruccion list = new AsignacionList(a,b,c,aleft,aright);
+                                                                                if (list instanceof AsignacionList){
+                                                                                    RESULT = list;
+                                                                                }
+                                                                            }
+                                                                            
+                                                                            RESULT = new AsignacionVec(a, c, b,null, aleft, aright);
+                                                                            :}
             | ID:a CORCHE1 EXPRESION:b CORCHE2 CORCHE1 EXPRESION:c CORCHE2 IGUAL EXPRESION:d FINCADENA {: RESULT = new AsignacionVec(a, d, b, c, aleft, aright); :}
 
 ;
@@ -222,6 +242,9 @@ VECTORESLISTADOSDIMENSIONES ::= VECTORESLISTADOSDIMENSIONES:a COMA CORCHE1 VECTO
 ;
 
 DECLARACIONLISTA ::= LIST MENOR TIPOS:a MAYOR ID:b IGUAL NEW LIST PAR1 PAR2 FINCADENA {: RESULT = new DeclaracionLista(b, a, aleft, aright); :}
+;
+
+IAPPEND ::= ID:a PUNTO APPEND PAR1 EXPRESION:b PAR2 FINCADENA {: RESULT = new Append(a, b, aleft, aright); :}
 ;
 
 IIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2 {:
@@ -317,7 +340,21 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | BOOLEANO:a    {:  RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
             | CARACTER:a    {:  RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright );   :}
             | ID:a          {:   RESULT= new AccesoVar(a, aleft,aright);   :}
-            | ID:a CORCHE1 EXPRESION:b CORCHE2 {: RESULT = new AccesoVec(a, b,null, aleft, aright);   :}
+            | ID:a CORCHE1 EXPRESION:b CORCHE2 {:
+                                                Instruccion instr = new AccesoVec(a, b, null, aleft, aright);
+                                                if (instr instanceof AccesoVec) {
+                                                    AccesoVec aux = (AccesoVec) instr;
+                                                    RESULT = aux;
+                                                }else  {
+                                                    Instruccion list = new AccesoList(a, b, aleft, aright);
+                                                    if (list instanceof AccesoList){
+                                                        AccesoList aux = (AccesoList) list;
+                                                        RESULT = aux;
+                                                    }
+                                                    
+                                                }
+                                                RESULT = new AccesoVec(a, b,null, aleft, aright);   
+                                                :}
             | ID:a CORCHE1 EXPRESION:b CORCHE2 CORCHE1 EXPRESION:c CORCHE2 {: RESULT = new AccesoVec(a, b, c, aleft, aright);   :}
             | PAR1 EXPRESION:a PAR2 {:   RESULT = a;   :}
 ;

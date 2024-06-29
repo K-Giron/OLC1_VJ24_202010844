@@ -64,6 +64,7 @@ DOSPUNTOS=":"
 FLECHA="=>"
 BARRABAJA="_"
 COMA=","
+PUNTO="."
 
 
 
@@ -97,6 +98,7 @@ STARTWITH = "start_with"
 RETURN = "return"
 LIST = "list"
 NEW = "new"
+APPEND = "append"
 
 
 
@@ -125,6 +127,7 @@ BOOL = "bool"
 <YYINITIAL> {RETURN} {return new Symbol(sym.RETURN, yyline, yycolumn,yytext());}
 <YYINITIAL> {LIST} {return new Symbol(sym.LIST, yyline, yycolumn,yytext());}
 <YYINITIAL> {NEW} {return new Symbol(sym.NEW, yyline, yycolumn,yytext());}
+<YYINITIAL> {APPEND} {return new Symbol(sym.APPEND, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}
@@ -180,6 +183,7 @@ BOOL = "bool"
 <YYINITIAL> {FLECHA} {return new Symbol(sym.FLECHA, yyline, yycolumn,yytext());}
 <YYINITIAL> {BARRABAJA} {return new Symbol(sym.BARRABAJA, yyline, yycolumn,yytext());}
 <YYINITIAL> {COMA} {return new Symbol(sym.COMA, yyline, yycolumn,yytext());}
+<YYINITIAL> {PUNTO} {return new Symbol(sym.PUNTO, yyline, yycolumn,yytext());}
 
 
 
