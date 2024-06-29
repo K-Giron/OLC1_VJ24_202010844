@@ -9,6 +9,7 @@ import analizadores.parser;
 import analizadores.scanner;
 import excepciones.Errores;
 import instrucciones.AsignacionVar;
+import instrucciones.AsignacionVec;
 import instrucciones.Declaracion;
 import instrucciones.DeclaracionVectores;
 import instrucciones.Metodo;
@@ -203,7 +204,7 @@ public class Ventana extends javax.swing.JFrame {
                     }
                 }
                 //declaracion de vectores
-                if (a instanceof DeclaracionVectores) {
+                if (a instanceof DeclaracionVectores || a instanceof AsignacionVec) {
                     var resultadoInterpretar = a.interpretar(ast, tabla);
                     if (resultadoInterpretar instanceof Errores) {
                         errores.add((Errores) resultadoInterpretar);

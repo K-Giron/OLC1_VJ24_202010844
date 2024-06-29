@@ -42,12 +42,12 @@ public class DeclaracionVectores extends Instruccion {
         //pasar a minusculas la mutabilidad
         this.mutabilidad = this.mutabilidad.toLowerCase();
         //validar si la variable es constante
-        if(this.mutabilidad.equals("const")){
-            esMutable = false;
-        }else if(this.mutabilidad.equals("var")){
-            esMutable = true;
-        }else{
-            return new Errores("SEMANTICO", "Tipo de mutabilidad en arreglos no valido", this.linea, this.col);
+        switch (this.mutabilidad) {
+            case "const" -> esMutable = false;
+            case "var" -> esMutable = true;
+            default -> {
+                return new Errores("SEMANTICO", "Tipo de mutabilidad en arreglos no valido", this.linea, this.col);
+            }
         }
 
         //lista de object para el arreglo de cualquier dimension

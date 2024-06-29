@@ -30,7 +30,6 @@ public class AccesoVec extends Instruccion {
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        System.out.println("AccesoVec");
         //buscar el vector
         var vector = tabla.getVariable(this.id);
         if (vector == null) {

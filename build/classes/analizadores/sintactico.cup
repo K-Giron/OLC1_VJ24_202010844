@@ -27,6 +27,7 @@ import instrucciones.Metodo;
 import instrucciones.StartWith;
 import instrucciones.Llamada;
 import instrucciones.DeclaracionVectores;
+import instrucciones.AsignacionVec;
 
 //expresiones
 import expresiones.Nativo;
@@ -154,6 +155,9 @@ DECLARACION ::= MUTABILIDAD:d ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
                 RESULT = new Declaracion(b,c, a,d, aleft, aright); :}
 ;
 ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
+            | ID:a CORCHE1 EXPRESION:b CORCHE2 IGUAL EXPRESION:c FINCADENA {: RESULT = new AsignacionVec(a, c, b,null, aleft, aright); :}
+            | ID:a CORCHE1 EXPRESION:b CORCHE2 CORCHE1 EXPRESION:c CORCHE2 IGUAL EXPRESION:d FINCADENA {: RESULT = new AsignacionVec(a, d, b, c, aleft, aright); :}
+
 ;
 
 
