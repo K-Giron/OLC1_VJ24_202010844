@@ -51,6 +51,7 @@ import expresiones.Remove;
 import expresiones.Round;
 import expresiones.Length;
 import expresiones.ToString;
+import expresiones.Find;
 
 // parser
 parser code
@@ -94,7 +95,7 @@ terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
 terminal VOID, STARTWITH;
 terminal CORCHE1,CORCHE2,RETURN;
 terminal NEW,LIST,APPEND,REMOVE;
-terminal ROUND,LENGTH,TOSTRING;
+terminal ROUND,LENGTH,TOSTRING,FIND;
 
 
 //no terminales
@@ -367,5 +368,6 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | ROUND PAR1 EXPRESION:a PAR2 {: RESULT = new Round(a, aleft, aright); :}
             | LENGTH PAR1 EXPRESION:a PAR2 {: RESULT = new Length(a, aleft, aright); :}
             | TOSTRING PAR1 EXPRESION:a PAR2 {: RESULT = new ToString(a, aleft, aright); :}
+            | ID:a PUNTO FIND PAR1 EXPRESION:b PAR2 {: RESULT = new Find(a, b, aleft, aright); :}
             | PAR1 EXPRESION:a PAR2 {:   RESULT = a;   :}
 ;

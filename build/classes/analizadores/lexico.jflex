@@ -103,6 +103,7 @@ REMOVE = "remove"
 ROUND = "round"
 LENGTH = "length"
 TOSTRING = "tostring"
+FIND = "find"
 
 
 
@@ -135,6 +136,7 @@ BOOL = "bool"
 <YYINITIAL> {ROUND} {return new Symbol(sym.ROUND, yyline, yycolumn,yytext());}
 <YYINITIAL> {LENGTH} {return new Symbol(sym.LENGTH, yyline, yycolumn,yytext());}
 <YYINITIAL> {TOSTRING} {return new Symbol(sym.TOSTRING, yyline, yycolumn,yytext());}
+<YYINITIAL> {FIND} {return new Symbol(sym.FIND, yyline, yycolumn,yytext());}
 <YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 <YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}

@@ -13,6 +13,7 @@ public class sym {
   public static final int PAR1 = 20;
   public static final int CHAR = 14;
   public static final int IGUALACION = 31;
+  public static final int FIND = 63;
   public static final int REMOVE = 59;
   public static final int LLAVE2 = 30;
   public static final int LLAVE1 = 29;
@@ -134,7 +135,8 @@ public class sym {
   "REMOVE",
   "ROUND",
   "LENGTH",
-  "TOSTRING"
+  "TOSTRING",
+  "FIND"
   };
 }
 
