@@ -49,6 +49,7 @@ public class sym {
   public static final int MODULO = 28;
   public static final int MENOS = 23;
   public static final int MENOR = 34;
+  public static final int TOSTRING = 62;
   public static final int CORCHE2 = 54;
   public static final int BREAK = 46;
   public static final int CORCHE1 = 53;
@@ -132,7 +133,8 @@ public class sym {
   "APPEND",
   "REMOVE",
   "ROUND",
-  "LENGTH"
+  "LENGTH",
+  "TOSTRING"
   };
 }
 
