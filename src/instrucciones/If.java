@@ -58,9 +58,6 @@ public class If extends Instruccion {
                 if (i instanceof Continue) {
                     return i;
                 }
-                if (i instanceof Return) {
-                    return i;
-                }
                 var resultado = i.interpretar(arbol, newTabla);
                 if (resultado instanceof Break) {
                     return resultado;
@@ -87,9 +84,7 @@ public class If extends Instruccion {
                     if (i instanceof Continue) {
                         return i;
                     }
-                    if (i instanceof Return) {
-                        return i;
-                    }
+
                     var resultado = i.interpretar(arbol, newTabla);
                     if (resultado instanceof Break) {
                         return resultado;
@@ -103,13 +98,6 @@ public class If extends Instruccion {
                     if (resultado instanceof Errores) {
                         return resultado;
                     }
-                }
-            }
-
-            if (this.elseIfInstruccion != null) {
-                var res = this.elseIfInstruccion.interpretar(arbol, tabla);
-                if (res instanceof Errores) {
-                    return res;
                 }
             }
         } 
