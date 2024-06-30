@@ -16,7 +16,7 @@ public class Round extends Instruccion {
     private Instruccion expresion;
 
     public Round(Instruccion expresion, int linea, int col) {
-        super(new Tipo(tipoDato.DECIMAL), linea, col);
+        super(new Tipo(tipoDato.ENTERO), linea, col);
         this.expresion = expresion;
     }
 
@@ -29,7 +29,10 @@ public class Round extends Instruccion {
         if (expresion.tipo.getTipo() != tipoDato.DECIMAL) {
             return new Errores("Semantico", "La funcion round solo acepta valores decimales", this.linea, this.col);
         }
-        return Math.round((double) valor);
+        //actualizar el tipo de la expresion
+        this.tipo.setTipo(tipoDato.ENTERO);
+        //redondear el valor y devolver un entero
+        return (int)Math.round((double)valor);
     }
     
 }

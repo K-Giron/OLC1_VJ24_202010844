@@ -33,6 +33,7 @@ import instrucciones.AsignacionList;
 import instrucciones.Append;
 
 
+
 //expresiones
 import expresiones.Nativo;
 import expresiones.Aritmeticas;
@@ -48,6 +49,7 @@ import expresiones.AccesoVec;
 import expresiones.AccesoList;
 import expresiones.Remove;
 import expresiones.Round;
+import expresiones.Length;
 
 // parser
 parser code
@@ -91,7 +93,7 @@ terminal String BREAK,CONTINUE,WHILE,DO, MATCH;
 terminal VOID, STARTWITH;
 terminal CORCHE1,CORCHE2,RETURN;
 terminal NEW,LIST,APPEND,REMOVE;
-terminal ROUND;
+terminal ROUND,LENGTH;
 
 
 //no terminales
@@ -362,5 +364,6 @@ EXPRESION ::= MENOS EXPRESION:a {:   RESULT = new Aritmeticas(a, OperadoresAritm
             | ID:a CORCHE1 EXPRESION:b CORCHE2 CORCHE1 EXPRESION:c CORCHE2 {: RESULT = new AccesoVec(a, b, c, aleft, aright);   :}
             | ID:a PUNTO REMOVE PAR1 EXPRESION:b PAR2 {: RESULT = new Remove(a, b, aleft, aright); :}
             | ROUND PAR1 EXPRESION:a PAR2 {: RESULT = new Round(a, aleft, aright); :}
+            | LENGTH PAR1 EXPRESION:a PAR2 {: RESULT = new Length(a, aleft, aright); :}
             | PAR1 EXPRESION:a PAR2 {:   RESULT = a;   :}
 ;
