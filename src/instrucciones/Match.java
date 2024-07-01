@@ -55,13 +55,23 @@ public class Match extends Instruccion {
                         return i;
                     }
                     if (i instanceof Return) {
-                        return i;
+                        //si el return viene null
+                        if (((Return) i).expresion == null) {
+                            return i;
+                        }
                     }
                     var resultado = i.interpretar(arbol, newTabla);
                     if (resultado instanceof Errores) {
                         return resultado;
                     }
-                    if ( resultado instanceof Break || resultado instanceof Continue || resultado instanceof Return) {
+                    if ( resultado instanceof Break || resultado instanceof Continue) {
+                        return resultado;
+                    }
+                    if (resultado instanceof Return return1) {
+                        //si el return viene null
+                        if (return1.valor == null) {
+                            return resultado;
+                        }
                         return resultado;
                     }
 
@@ -80,13 +90,23 @@ public class Match extends Instruccion {
                     return i;
                 }
                 if (i instanceof Return) {
-                    return i;
+                    //si el return viene null
+                    if (((Return) i).expresion == null) {
+                        return i;
+                    }
                 }
                 var resultado = i.interpretar(arbol, newTabla);
                 if (resultado instanceof Errores) {
                     return resultado;
                 }
-                if ( resultado instanceof Break || resultado instanceof Continue || resultado instanceof Return) {
+                if ( resultado instanceof Break || resultado instanceof Continue ) {
+                    return resultado;
+                }
+                if (resultado instanceof Return return1) {
+                    //si el return viene null
+                    if (return1.valor == null) {
+                        return resultado;
+                    }
                     return resultado;
                 }
             }

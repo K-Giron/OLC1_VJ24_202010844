@@ -1,7 +1,6 @@
 <INICIO> ::= <INSTRUCCIONES>
 
-<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>
-                  | <INSTRUCCION>
+<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION> | <INSTRUCCION>
 
 <INSTRUCCION> ::= <IMPRESION>
                 | <DECLARACION>
@@ -10,72 +9,131 @@
                 | <IFOR>
                 | <BREAKK>
                 | <CONTINUEE>
-                | <INCREMENTO> FINCADENA
-                | <DECREMENTO> FINCADENA
+                | <INCREMENTO> "FINCADENA"
+                | <DECREMENTO> "FINCADENA"
                 | <IWHILE>
                 | <IDOWHILE>
                 | <IMATCH>
-                | error FINCADENA
+                | <METODO>
+                | <ISTARTWITH>
+                | <LLAMADA>
+                | <DECLARACIONVECTORES>
+                | <IRETURN>
+                | <DECLARACIONLISTA>
+                | <IAPPEND>
+                | <IREMOVE>
+                | error "FINCADENA"
 
-<IMPRESION> ::= IMPRIMIR PAR1 <EXPRESION> PAR2 FINCADENA
+<IMPRESION> ::= "IMPRIMIR" "(" <EXPRESION> ")" "FINCADENA"
 
-<DECLARACION> ::= MUTABILIDAD ID DOSPUNTOS <TIPOS> IGUAL <EXPRESION> FINCADENA
-                | MUTABILIDAD ID DOSPUNTOS <TIPOS> FINCADENA
+<DECLARACION> ::= "MUTABILIDAD" "ID" ":" <TIPOS> "=" <EXPRESION> "FINCADENA"
+                | "MUTABILIDAD" "ID" ":" <TIPOS> "FINCADENA"
 
-<ASIGNACION> ::= ID IGUAL <EXPRESION> FINCADENA
+<ASIGNACION> ::= "ID" "=" <EXPRESION> "FINCADENA"
+               | "ID" "[" <EXPRESION> "]" "=" <EXPRESION> "FINCADENA"
+               | "ID" "[" <EXPRESION> "]" "[" <EXPRESION> "]" "=" <EXPRESION> "FINCADENA"
 
-<IIF> ::= IF PAR1 <EXPRESION> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
-         | ELSE LLAVE1 <INSTRUCCIONES> LLAVE2
-         | ELSE <IIF>
+<METODO> ::= <TIPOS> "ID" "(" <PARAMS> ")" "{" <INSTRUCCIONES> "}"
+           | <TIPOS> "ID" "(" ")" "{" <INSTRUCCIONES> "}"
 
-<IFOR> ::= FOR PAR1 <ASIGNACION> <EXPRESION> FINCADENA <ACTFOR> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
+<LLAMADA> ::= "ID" "(" <PARAMSCALL> ")" "FINCADENA"
+            | "ID" "(" ")" "FINCADENA"
 
-<ACTFOR> ::= ID IGUAL <EXPRESION>
+<PARAMS> ::= <PARAMS> "," <TIPOS> "ID"
+           | <TIPOS> "ID"
+
+<ISTARTWITH> ::= "STARTWITH" "ID" "(" <PARAMSCALL> ")" "FINCADENA"
+               | "STARTWITH" "ID" "(" ")" "FINCADENA"
+
+<PARAMSCALL> ::= <PARAMSCALL> "," <EXPRESION>
+               | <EXPRESION>
+
+<DECLARACIONVECTORES> ::= "MUTABILIDAD" "ID" ":" <TIPOS> "[]" "=" "{" <VECTORESLISTA> "}" "FINCADENA"
+                         | "MUTABILIDAD" "ID" ":" <TIPOS> "[][]" "=" "{" <VECTORESLISTADOSDIMENSIONES> "}" "FINCADENA"
+
+<VECTORESLISTA> ::= <VECTORESLISTA> "," <EXPRESION>
+                  | <EXPRESION>
+
+<VECTORESLISTADOSDIMENSIONES> ::= <VECTORESLISTADOSDIMENSIONES> "," "{" <VECTORESLISTA> "}"
+                                | "{" <VECTORESLISTA> "}"
+
+<DECLARACIONLISTA> ::= "LIST" "<" <TIPOS> ">" "ID" "=" "NEW" "LIST" "(" ")" "FINCADENA"
+
+<IAPPEND> ::= "ID" "." "APPEND" "(" <EXPRESION> ")" "FINCADENA"
+
+<IIF> ::= "IF" "(" <EXPRESION> ")" "{" <INSTRUCCIONES> "}"
+        | "IF" "(" <EXPRESION> ")" "{" <INSTRUCCIONES> "}" "ELSE" "{" <INSTRUCCIONES> "}"
+        | "IF" "(" <EXPRESION> ")" "{" <INSTRUCCIONES> "}" "ELSE" <IIF>
+
+<IFOR> ::= "FOR" "(" <ASIGNACION> <EXPRESION> "FINCADENA" <ACTFOR> ")" "{" <INSTRUCCIONES> "}"
+
+<ACTFOR> ::= "ID" "=" <EXPRESION>
            | <INCREMENTO>
            | <DECREMENTO>
 
-<BREAKK> ::= BREAK FINCADENA
+<BREAKK> ::= "BREAK" "FINCADENA"
 
-<CONTINUEE> ::= CONTINUE FINCADENA
+<CONTINUEE> ::= "CONTINUE" "FINCADENA"
 
-<INCREMENTO> ::= ID MAS MAS
+<IRETURN> ::= "RETURN" <EXPRESION> "FINCADENA"
+            | "RETURN" "FINCADENA"
 
-<DECREMENTO> ::= ID MENOS MENOS
+<INCREMENTO> ::= "ID" "++"
 
-<TIPOS> ::= INT
-          | DOUBLE
-          | STRING
-          | CHAR
-          | BOOL
+<DECREMENTO> ::= "ID" "--"
 
-<IWHILE> ::= WHILE PAR1 <EXPRESION> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
+<TIPOS> ::= "INT"
+          | "DOUBLE"
+          | "STRING"
+          | "CHAR"
+          | "BOOL"
+          | "VOID"
 
-<IDOWHILE> ::= DO LLAVE1 <INSTRUCCIONES> LLAVE2 WHILE PAR1 <EXPRESION> PAR2 FINCADENA
+<IWHILE> ::= "WHILE" "(" <EXPRESION> ")" "{" <INSTRUCCIONES> "}"
 
-<IMATCH> ::= MATCH <EXPRESION> LLAVE1 <INSTRUCCIONES> LLAVE2
+<IDOWHILE> ::= "DO" "{" <INSTRUCCIONES> "}" "WHILE" "(" <EXPRESION> ")" "FINCADENA"
 
-<EXPRESION> ::= MENOS <EXPRESION>
-              | <EXPRESION> MAS <EXPRESION>
-              | <EXPRESION> MENOS <EXPRESION>
-              | <EXPRESION> MULTIPLICACION <EXPRESION>
-              | <EXPRESION> DIVISION <EXPRESION>
-              | <EXPRESION> POTENCIA <EXPRESION>
-              | <EXPRESION> MODULO <EXPRESION>
-              | <EXPRESION> IGUALACION <EXPRESION>
-              | <EXPRESION> MENORQUE <EXPRESION>
-              | <EXPRESION> MAYORQUE <EXPRESION>
-              | <EXPRESION> MENOR <EXPRESION>
-              | <EXPRESION> MAYOR <EXPRESION>
-              | <EXPRESION> DIFERENTE <EXPRESION>
-              | <EXPRESION> OR <EXPRESION>
-              | <EXPRESION> AND <EXPRESION>
-              | <EXPRESION> XOR <EXPRESION>
-              | NOT <EXPRESION>
-              | PAR1 <TIPOS> PAR2 <EXPRESION>
-              | ENTERO
-              | DECIMAL
-              | CADENA
-              | BOOLEANO
-              | CARACTER
-              | ID
-              | PAR1 <EXPRESION> PAR2
+<IMATCH> ::= "MATCH" <EXPRESION> "{" <CASOS> <DEFAULT> "}"
+           | "MATCH" <EXPRESION> "{" <CASOS> "}"
+           | "MATCH" <EXPRESION> "{" <DEFAULT> "}"
+
+<CASOS> ::= <CASOS> <CASO>
+          | <CASO>
+
+<CASO> ::= <EXPRESION> "=>" "{" <INSTRUCCIONES> "}"
+
+<DEFAULT> ::= "_" "=>" "{" <INSTRUCCIONES> "}"
+
+<EXPRESION> ::= "-" <EXPRESION>
+              | <EXPRESION> "+" <EXPRESION>
+              | <EXPRESION> "-" <EXPRESION>
+              | <EXPRESION> "*" <EXPRESION>
+              | <EXPRESION> "/" <EXPRESION>
+              | <EXPRESION> "^" <EXPRESION>
+              | <EXPRESION> "%" <EXPRESION>
+              | <EXPRESION> "==" <EXPRESION>
+              | <EXPRESION> "<" <EXPRESION>
+              | <EXPRESION> ">" <EXPRESION>
+              | <EXPRESION> "<=" <EXPRESION>
+              | <EXPRESION> ">=" <EXPRESION>
+              | <EXPRESION> "!=" <EXPRESION>
+              | <EXPRESION> "||" <EXPRESION>
+              | <EXPRESION> "&&" <EXPRESION>
+              | <EXPRESION> "^^" <EXPRESION>
+              | <LLAMADA>
+              | "!" <EXPRESION>
+              | "(" <TIPOS> ")" <EXPRESION>
+              | "ENTERO"
+              | "DECIMAL"
+              | "CADENA"
+              | "BOOLEANO"
+              | "CARACTER"
+              | "ID"
+              | "ID" "[" <EXPRESION> "]"
+              | "ID" "[" <EXPRESION> "]" "[" <EXPRESION> "]"
+              | "ID" "." "REMOVE" "(" <EXPRESION> ")"
+              | "ROUND" "(" <EXPRESION> ")"
+              | "LENGTH" "(" <EXPRESION> ")"
+              | "TOSTRING" "(" <EXPRESION> ")"
+              | "ID" "." "FIND" "(" <EXPRESION> ")"
+              | "(" <EXPRESION> ")"

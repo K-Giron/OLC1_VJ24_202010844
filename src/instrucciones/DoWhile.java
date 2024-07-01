@@ -53,7 +53,10 @@ public class DoWhile extends Instruccion{
                     break;
                 }
                 if (i instanceof Return) {
-                    return i;
+                    //si el return viene null
+                    if (((Return) i).expresion == null) {
+                        return i;
+                    }
                 }
                 var res = i.interpretar(arbol, newTabla2);
                 if (res instanceof Break) {
@@ -62,7 +65,11 @@ public class DoWhile extends Instruccion{
                 if (res instanceof Continue) {
                     break;
                 }
-                if (res instanceof Return) {
+                if (res instanceof Return return1) {
+                    //si el return viene null
+                    if (return1.valor == null) {
+                        return res;
+                    }
                     return res;
                 }
                 if (res instanceof Errores) {

@@ -4,11 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/analizadores/Generador.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/Llamada.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/Metodo.java</file>
             <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/principal/Ventana.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/AccesoVec.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/Append.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/AccesoVar.java</file>
-            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/DeclaracionLista.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/Return.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/If.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/Declaracion.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/instrucciones/For.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/Nativo.java</file>
+            <file>file:/C:/Users/kevin/Documents/NetBeansProjects/Proyecto_Compi/src/expresiones/Relacionales.java</file>
         </group>
     </open-files>
 </project-private>

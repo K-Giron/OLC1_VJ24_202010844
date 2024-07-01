@@ -48,14 +48,11 @@ public class Declaracion extends Instruccion{
         if (this.valor == null){
             valorInterpretado =this.valoresDefault(); 
         }else{
-            valorInterpretado =this.valor.interpretar(arbol, tabla);            
+            valorInterpretado =this.valor.interpretar(arbol, tabla);
+            //actualizar el tipo de la variable
+            this.valor.setTipo(this.tipo);            
         }
-        //validar si viene un tipo return y obtener el valor
-        if (valorInterpretado instanceof Return){
-            //actualizar el valor y su tipo
-            this.valor.tipo.setTipo(((Return) valorInterpretado).tipo.getTipo());
-            valorInterpretado = ((Return) valorInterpretado).expresion.interpretar(arbol, tabla);
-        }
+        
 
 
         //validar si hubo un error
@@ -63,9 +60,11 @@ public class Declaracion extends Instruccion{
             return valorInterpretado;
         }
         if (this.valor != null) {
-            if (this.valor.tipo.getTipo() != this.tipo.getTipo()) {
-                return new Errores("SEMANTICO", "Tipos erroneos", this.linea, this.col);
+            //verificar si el tipo de la variable es igual al tipo de la expresion
+            if (this.tipo.getTipo() != this.valor.tipo.getTipo()) {
+                return new Errores("Semantico", "El tipo de la variable no coincide con el tipo de la expresion", this.linea, this.col);
             }
+            
         }
         //validar si la variable es constante
         switch (this.mutabilidad) {

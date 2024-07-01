@@ -58,6 +58,12 @@ public class If extends Instruccion {
                 if (i instanceof Continue) {
                     return i;
                 }
+                if (i instanceof Return) {
+                    //si el return viene null
+                    if (((Return) i).expresion == null) {
+                        return i;
+                    }
+                }
                 var resultado = i.interpretar(arbol, newTabla);
                 if (resultado instanceof Break) {
                     return resultado;
@@ -66,7 +72,11 @@ public class If extends Instruccion {
                     return resultado;
                 }
                 
-                if (resultado instanceof Return) {
+                if (resultado instanceof Return return1) {
+                    //si el return viene null
+                    if (return1.valor == null) {
+                        return resultado;
+                    }
                     return resultado;
                 }
 
@@ -84,7 +94,12 @@ public class If extends Instruccion {
                     if (i instanceof Continue) {
                         return i;
                     }
-
+                    if (i instanceof Return) {
+                        //si el return viene null
+                        if (((Return) i).expresion == null) {
+                            return i;
+                        }
+                    }
                     var resultado = i.interpretar(arbol, newTabla);
                     if (resultado instanceof Break) {
                         return resultado;
@@ -92,7 +107,11 @@ public class If extends Instruccion {
                     if (resultado instanceof Continue) {
                         return resultado;
                     }
-                    if (resultado instanceof Return) {
+                    if (resultado instanceof Return return1) {
+                        //si el return viene null
+                        if (return1.valor == null) {
+                            return resultado;
+                        }
                         return resultado;
                     }
                     if (resultado instanceof Errores) {
@@ -101,6 +120,32 @@ public class If extends Instruccion {
                 }
             }
         } 
+
+        if (this.elseIfInstruccion != null) {
+            var resultado = this.elseIfInstruccion.interpretar(arbol, tabla);
+            if (resultado instanceof Break) {
+                return resultado;
+            }
+            if (resultado instanceof Continue) {
+                return resultado;
+            }
+            if (resultado instanceof Return) {
+                //si el return viene null
+                if (((Return) resultado).expresion == null) {
+                    return resultado;
+                }
+            }
+            if (resultado instanceof Return return1) {
+                //si el return viene null
+                if (return1.valor == null) {
+                    return resultado;
+                }
+                return resultado;
+            }
+            if (resultado instanceof Errores) {
+                return resultado;
+            }
+        }
         return null;
 
     }

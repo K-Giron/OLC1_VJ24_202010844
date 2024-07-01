@@ -64,7 +64,10 @@ public class For extends Instruccion {
                     break;
                 }
                 if (i instanceof Return) {
-                    return i;
+                    //si el return viene null
+                    if (((Return) i).expresion == null) {
+                        return i;
+                    }
                 }
                 var resIns = i.interpretar(arbol, newTabla2);
                 if (resIns instanceof Break) {
@@ -73,7 +76,11 @@ public class For extends Instruccion {
                 if (resIns instanceof Continue) {
                     break;
                 }
-                if (resIns instanceof Return) {
+                if (resIns instanceof Return return1) {
+                    //si el return viene null
+                    if (return1.valor == null) {
+                        return resIns;
+                    }
                     return resIns;
                 }
                 if (resIns instanceof Errores) {

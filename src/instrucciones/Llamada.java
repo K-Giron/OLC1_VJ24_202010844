@@ -5,6 +5,8 @@
 package instrucciones;
 import abstracto.Instruccion;
 import excepciones.Errores;
+import expresiones.Return;
+
 import java.util.LinkedList;
 import simbolo.*;
 
@@ -70,6 +72,19 @@ public class Llamada extends Instruccion {
             }
 
             var resultadoFuncion = metodo.interpretar(arbol, newTabla);
+            //resultado instancia de errores
+            if (resultadoFuncion instanceof Return) {
+                //si el valor de retorno es null
+                if (((Return) resultadoFuncion).valor == null) {
+                    //hacer un return null
+                    return null;
+                }
+                //actualizar el tipo de la funcion
+                this.tipo = ((Return) resultadoFuncion).tipo;
+                //retornar el valor de retorno
+                return ((Return)resultadoFuncion).valor;
+
+            }
             return resultadoFuncion;
 
         }

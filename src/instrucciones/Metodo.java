@@ -40,8 +40,12 @@ public class Metodo extends Instruccion {
             if (resultado instanceof Break || resultado instanceof Continue) {
                 return new Errores("SEMANTICO", "Sentencia fuera de ciclo", linea, col);
             }
-            if (i instanceof Return) {
-                return i;
+            if (resultado instanceof Return) {
+                if (((Return) resultado).valor == null) {
+                    //hacer un return null
+                    return null;
+                }
+                return resultado;
             }
 
             // return;
